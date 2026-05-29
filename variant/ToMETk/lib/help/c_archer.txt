@@ -1,0 +1,50 @@
+~~~~~01|Archer
+~~~~~02|Classes|Archer
+#####R=== Archers ===
+
+#####GDescription
+Archers are to bows what warriors are to melee. They are the best class
+around with any bow/crossbow/sling. 
+
+Needing a lot of ammo, they will learn early how to make it from junk found
+in the dungeons. They also gain at skill level 20 the unique ability to make 
+their arrows/bolts/shots pierce through monsters!
+
+#####GStarting Stat Modifiers
+Strength         +2
+Intelligence     +1
+Wisdom           +0
+Dexterity        +2
+Constitution     +1
+Charisma         +1
+Bonus Blows       0
+Hit Die          +d4
+Exp Penalty      30%
+
+#####GStarting Skills:
+#####BSkill                   Start Level     Skill Point Gains
+Combat                  1.000           [0.800]
+  Weaponmastery         1.000           [0.500]
+  Archery               1.000           [0.850]
+    Bow-mastery         0.000           [0.500]
+    Crossbow-mastery    0.000           [0.500]
+    Sling-mastery       0.000           [0.500]
+    Boomerang-mastery   0.000           [0.500]
+Sneakiness              1.000           [0.900]
+  Disarming             1.000           [0.900]
+Magic                   0.000           [0.200]
+  Magic-Device          1.000           [1.100]
+Spirituality        
+  Prayer                0.000           [0.500]
+Monster-lore            0.000           [0.500]
+
+#####GInnate Abilities:
+#####BAbility              Character level
+Ammo-creation               2
+
+#####GStarting Equipment
+An archer begins the game with:
+    a short bow
+    a dagger
+    a sling
+    some ammo

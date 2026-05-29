@@ -8,4 +8,9 @@
 # script is sourced, the variable $dir must contain the
 # full path name of this file's directory.
 
-package ifneeded TclZip 1.0 [list tclPkgSetup $dir TclZip 1.0 {{tclzip.dll load zip}}]
+if {$::tcl_platform(platform) eq "windows"} {
+    package ifneeded TclZip 1.0 [list tclPkgSetup $dir TclZip 1.0 {{tclzip.dll load zip}}]
+} else {
+    # En Linux/Unix no tenemos tclzip.dll: usar el shim en Tcl puro (zip/unzip).
+    package ifneeded TclZip 1.0 [list source [file join $dir tclzip-shim.tcl]]
+}

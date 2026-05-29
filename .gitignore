@@ -1,0 +1,17 @@
+build-docker/
+build/
+*.log
+
+# Paquete de release (Windows) dejado para análisis; no es fuente.
+OmnibandTk-1.5/
+
+# Directorio de build de integración de ToME
+build-tome/
+# Artefactos de compilación
+*.o
+*.a
+variant/ToMETk/src/tome
+variant/ToMETk/src/tolua
+
+# Archivos de referencia para portar (tarballs/binarios, ~72MB); no es codigo del proyecto
+newvariants/

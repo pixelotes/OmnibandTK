@@ -1426,7 +1426,7 @@ Global tclCompiler 0
 	}
 	# Do this *before* the ttk import stuff
 	if {[Platform unix] && ![winfo exists .tkcon]} {
-		set dirs [glob -nocomplain -type d -directory [CPath lib] tkcon-*]
+		set dirs [glob -nocomplain -type d -directory [file join $Angband(dir,common) lib] tkcon-*]
 		if {[llength $dirs]} {
 			set tkcon [file join [lindex $dirs end] tkcon.tcl]
 			if {[file exists $tkcon]} {

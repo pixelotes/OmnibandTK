@@ -224,5 +224,14 @@ IF (CMAKE_HOST_UNIX AND NOT CYGWIN)
 	SET (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ENDIF (CMAKE_HOST_UNIX AND NOT CYGWIN)
 
+# Portabilidad 64-bit: el motor define s32b/u32b como 'long' salvo que L64 esté
+# definido (entonces usa 'int'). En Unix LP64 (Linux/macOS x86_64/arm64) 'long'
+# es de 8 bytes, lo que rompe la RNG (Rand_div asume wraparound a 32 bits) y el
+# layout de structs/savefile. El código original solo definía L64 para DEC Alpha.
+# Lo definimos en cualquier Unix de 64 bits. NO en Windows (LLP64: long=4 bytes).
+IF (NOT WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+	ADD_DEFINITIONS (-DL64)
+ENDIF (NOT WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+
 ADD_SUBDIRECTORY (src)
 ADD_SUBDIRECTORY (variant)

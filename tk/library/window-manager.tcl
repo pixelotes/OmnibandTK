@@ -160,6 +160,13 @@ proc NSWindowManager::Setup {winName} {
 	if {!$resizeH} {set width [winfo reqwidth $win]}
 	if {!$resizeV} {set height [winfo reqheight $win]}
 
+	# Portabilidad: bajo WM con reparenting (p.ej. fluxbox en Linux) el geomCmd
+	# puede devolver dimensiones negativas si el frame de otra ventana (Main) aún
+	# no tiene geometría válida en este punto del init. Usar el tamaño natural como
+	# fallback en vez de petar con "bad geometry specifier".
+	if {$width <= 0}  {set width [winfo reqwidth $win]}
+	if {$height <= 0} {set height [winfo reqheight $win]}
+
 	wm geometry $win ${width}x$height
 	update
 

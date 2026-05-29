@@ -1,0 +1,21 @@
+~~~~~01|Beorning
+~~~~~02|Races|Beorning
+#####R=== Beornings ===
+
+#####GDescription
+Beornings are the descendants of Beorn, a powerful shapeshifter who
+dwells near Mirkwood. They have all inherited his shapeshifting abilities
+and can turn into powerful bears at will.
+
+#####GStat Modifiers
+Strength        +4
+Intelligence    -2   
+Wisdom          -2   
+Dexterity       -1   
+Constitution    +3   
+Charisma        -5       
+Hit Dice Sides  12         
+Exp Penalty     +50%
+
+#####GSkill Bonuses (supplementary to existing skills)
+Bearform-combat            1.000           [1.000]

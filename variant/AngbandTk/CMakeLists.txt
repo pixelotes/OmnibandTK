@@ -70,8 +70,10 @@ TARGET_LINK_LIBRARIES (angband_library
     ${TCL_LIBRARY}
     ${TK_LIBRARY}
     ${DBWIN_LIB}
-    comdlg32
 )
+IF (CMAKE_HOST_WIN32)
+    TARGET_LINK_LIBRARIES (angband_library comdlg32)
+ENDIF (CMAKE_HOST_WIN32)
 
 INSTALL (
 	TARGETS angband_library

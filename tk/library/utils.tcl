@@ -111,6 +111,15 @@ proc NSUtils::GrabSave {win} {
 		set Priv(grab,$depth,grabStatus) \
 			[grab status $Priv(grab,$depth,oldGrab)]
 	}
+	# Bajo WM con mapeo diferido (p.ej. fluxbox en Linux) la ventana puede no ser
+	# aún "viewable" cuando se pide el grab -> "grab failed: window not viewable".
+	# Esperar a que sea visible, igual que hace tk_dialog.
+	if {[winfo exists $win] && ![winfo viewable $win]} {
+		update idletasks
+		if {![winfo viewable $win]} {
+			catch {tkwait visibility $win}
+		}
+	}
 	grab $win
 
 	return

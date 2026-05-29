@@ -204,7 +204,10 @@ $tree configure -itemheight 0 -yscrollincrement 1; # so item wrapping works
 	# Item style
 	#
 	$tree element create eSel rect
-	$tree element create eTxt text -fill White -lmargin2 24
+	# -lmargin2 (sangría de líneas envueltas) no existe en el elemento text del
+	# treectrl 2.2.9 de SourceForge; lo omitimos (cosmético). Era una extensión
+	# del treectrl propio de Tim Baker.
+	$tree element create eTxt text -fill White
 
 	$tree style create STYLE
 	$tree style elements STYLE {eSel eTxt}
