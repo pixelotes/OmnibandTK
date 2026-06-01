@@ -17,7 +17,7 @@
 #error "you must define one of PLATFORM_MAC, PLATFORM_WIN or PLATFORM_X11"
 #endif /* */
 
-#if !defined(ANGBANDTK) && !defined(KANGBANDTK) && !defined(OANGBANDTK) && !defined(ZANGBANDTK) && !defined(TOMETK)
+#if !defined(ANGBANDTK) && !defined(KANGBANDTK) && !defined(OANGBANDTK) && !defined(ZANGBANDTK)
 #error "you must pass -DxANGBANDTK to the compiler"
 #endif /* */
 
@@ -169,77 +169,6 @@
 #endif /* ZANGBANDTK */
 
 /*
- * ToME (linaje ZAngband/PernAngband). Mapeos de la capa de abstracción al
- * engine real de ToME 2.2.2. El núcleo coincide con ZAngband; difieren:
- * MAX_P_IDX (max_rp_idx), maximize/preserve (sin _mode), max_dlv (array por
- * mazmorra) e inscripciones (quarks via o->note). EN CURSO.
- */
-#if defined(TOMETK)
-#define MAX_A_IDX max_a_idx
-#define MAX_F_IDX max_f_idx
-#define MAX_K_IDX max_k_idx
-#define MAX_M_IDX max_m_idx
-#define MAX_O_IDX max_o_idx
-#define MAX_R_IDX max_r_idx
-#define MAX_V_IDX max_v_idx
-#define MAX_P_IDX max_rp_idx
-#define MAX_QUESTS max_quests
-#define DUNGEON_WID MAX_WID
-#define DUNGEON_HGT MAX_HGT
-#define cave_feat(y,x) cave[y][x].feat
-#define cave_info(y,x) cave[y][x].info
-#define cave_m_idx(y,x) cave[y][x].m_idx
-#define cave_o_idx(y,x) cave[y][x].o_idx
-#define in_bounds_test in_bounds2
-#define in_bounds_fully_test in_bounds
-#define p_ptr_depth dun_level
-#define p_ptr_max_depth max_dlv[dungeon_type] /* TODO: ToME max depth por mazmorra */
-#define p_ptr_max_lev p_ptr->max_plv
-#define op_ptr_base_name player_base
-#define op_ptr_delay_factor delay_factor
-#define op_ptr_hitpoint_warn hitpoint_warn
-#define op_ptr_full_name player_name
-#define p_ptr_py py
-#define p_ptr_px px
-#define p_ptr_running running
-#define p_ptr_resting resting
-#define p_ptr_command_arg command_arg
-#define p_ptr_command_cmd command_cmd
-#define p_ptr_command_rep command_rep
-#define p_ptr_command_wrk command_wrk
-#define p_ptr_target_who target_who
-#define p_ptr_target_col target_col
-#define p_ptr_target_row target_row
-#define p_ptr_is_dead death
-#define p_ptr_died_from died_from
-#define p_ptr_wizard wizard
-#define p_ptr_total_winner total_winner
-#define p_ptr_history history
-#define p_ptr_player_hp player_hp
-#define p_ptr_noscore noscore
-#define p_ptr_energy_use energy_use
-#define p_ptr_equip_cnt equip_cnt
-#define p_ptr_point_based point_based
-#define p_ptr_auto_roller autoroller
-#define p_ptr_maximize maximize
-#define p_ptr_preserve preserve
-#define Rand_normal randnor
-#define MAX_VALID_R_IDX max_r_idx
-#define set_user_inscription(o,q) o->note = quark_add(q)
-#define get_user_inscription(o) quark_str(o->note)
-/* Constantes que ToME no define o nombra distinto */
-#define A_MAX 6                       /* ToME: A_STR..A_CHR, sin A_MAX */
-#define MAX_CLASS max_c_idx
-#define O_NAME_MAX 80
-#define TOWN_DAWN (10L * DAY)         /* ToME: dawn = turn % (10*DAY) */
-#define FEAT_SHOP_HEAD FEAT_SHOP      /* ToME: una sola feature de tienda */
-#define FEAT_SHOP_TAIL FEAT_SHOP
-#define VERSION_NAME "ToME"
-#define player_is_here(y,x) \
-	(((y) == py) && ((x) == px))
-#endif /* TOMETK */
-
-/*
  * Angband, KAngband and OAngband have monster_lore, while
  * ZAngband has monster_race. In addition, OAngband has
  * removed the "r_" prefix before field names.
@@ -254,7 +183,7 @@
 #define LORE_TYPE monster_lore
 #define LF(f) f
 #endif
-#if defined(ZANGBANDTK) || defined(TOMETK)
+#if defined(ZANGBANDTK)
 #define LORE_NTH(n) r_info[n]
 #define LORE_TYPE monster_race
 #define LF(f) r_##f
@@ -280,9 +209,6 @@
 #if defined(ZANGBANDTK)
 #define monster_is_friend(m) (is_friendly(m) || is_pet(m))
 #endif /* ZANGBANDTK */
-#if defined(TOMETK)
-#define monster_is_friend(m) 0 /* TODO: ToME amigos/mascotas via m->status */
-#endif /* TOMETK */
 
 #ifndef PY_MAX_SPELLS
 #define PY_MAX_SPELLS 64
@@ -297,7 +223,7 @@
 #define PU_MAP_INFO 0x04000000L	/* Update g_grid[] */
 
 /* cmd4.c */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK) || defined(TOMETK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 #define CHEAT_MAX 6
 #endif /* */
 #if defined(ZANGBANDTK)
@@ -318,7 +244,7 @@ extern char **r_info_flags[10];
 extern int r_info_flags_max;
 extern cptr k_info_flags1[], k_info_flags2[], k_info_flags3[];
 extern cptr r_info_flags1[], r_info_flags2[], r_info_flags3[],
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK) || defined(TOMETK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 	r_info_flags4[], r_info_flags5[], r_info_flags6[];
 #endif /* ANGBANDTK, KANGBANDTK, OANGBANDTK */
 #if defined(ZANGBANDTK)

@@ -72,21 +72,6 @@ static char *keyword_birth[] = {
 
 #endif /* ZANGBANDTK */
 
-#if defined(TOMETK)
-
-#define BIRTH_GENDER    1
-#define BIRTH_RACE      2
-#define BIRTH_CLASS     3
-#define BIRTH_GENERATE  4
-
-static char *keyword_birth[] = {
-	"gender", "race", "class", "generate", NULL
-};
-
-#define STAT_LIMIT 53
-
-#endif /* TOMETK */
-
 /*
  * This is a debugging macro to make sure my switch statements match
  * the list of strings passed to Tcl_GetIndexFromObj().
