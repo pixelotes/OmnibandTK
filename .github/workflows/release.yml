@@ -1,0 +1,76 @@
+name: Release
+
+# Se dispara al MERGEAR un Pull Request cuya rama de origen sea release/<version>
+# (p.ej. release/1.6). La versión se extrae del nombre de la rama.
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write   # necesario para crear el GitHub Release
+
+jobs:
+  build-and-release:
+    # Solo si el PR se ha mergeado y venía de una rama release/*
+    if: >
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extraer versión de la rama release/*
+        id: ver
+        run: |
+          branch="${{ github.event.pull_request.head.ref }}"
+          version="${branch#release/}"
+          if [ -z "$version" ]; then
+            echo "::error::No se pudo extraer la versión de la rama '$branch'"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version"     >> "$GITHUB_OUTPUT"
+          echo "Versión detectada: $version"
+
+      # Compila las 4 variantes en Docker (build de Tcl/Tk 8.6.16 desde fuente +
+      # treectrl 2.4.1). La primera vez ~10-15 min; ver docker/Dockerfile.
+      # TODO (mejora): cachear la imagen de dependencias (buildx + cache gha o GHCR)
+      # para acelerar releases sucesivas.
+      - name: Compilar las variantes en Docker
+        run: ./docker/build.sh
+
+      - name: Empaquetar binarios (layout de instalación)
+        id: pkg
+        run: |
+          version="${{ steps.ver.outputs.version }}"
+          stage="omnibandtk-${version}-linux-x86_64"
+          mkdir -p "$stage/lib/dbwin"
+          cp build-docker/src/boot/angband                     "$stage/"
+          cp build-docker/src/common-dll/common.so             "$stage/lib/"
+          cp build-docker/src/sound/NoSoundCard/sound-nocard.so "$stage/lib/"
+          cp build-docker/src/dbwin/dbwin.so                   "$stage/lib/dbwin/"
+          for v in AngbandTk KAngbandTk OAngbandTk ZAngbandTk; do
+            mkdir -p "$stage/variant/$v"
+            cp "build-docker/variant/$v/angband.so" "$stage/variant/$v/"
+          done
+          tar czf "${stage}.tar.gz" "$stage"
+          ls -lh "${stage}.tar.gz"
+          echo "artifact=${stage}.tar.gz" >> "$GITHUB_OUTPUT"
+
+      - name: Crear GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: OmnibandTk ${{ steps.ver.outputs.version }}
+          body: |
+            Build automática de **OmnibandTk ${{ steps.ver.outputs.version }}** — 4 variantes, Linux x86_64.
+
+            Compilado en Docker (Debian 12 / gcc 12) contra Tcl/Tk 8.6.16 vendado desde fuente.
+
+            ⚠️ Contiene los **binarios compilados** (`angband.so` de las 4 variantes,
+            `common.so`, `boot`). El runtime jugable completo (extensiones treectrl/Img/
+            Tkhtml + X11) está pendiente — ver `PORTING.md`, Fase 3.
+          files: ${{ steps.pkg.outputs.artifact }}
+          fail_on_unmatched_files: true

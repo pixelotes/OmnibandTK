@@ -15,3 +15,6 @@ variant/ToMETk/src/tolua
 
 # Archivos de referencia para portar (tarballs/binarios, ~72MB); no es codigo del proyecto
 newvariants/
+
+# Otros archivos de documentación generados, no fuente.
+docs/

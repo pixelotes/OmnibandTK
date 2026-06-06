@@ -104,7 +104,7 @@ static void DeleteProcAssign(TreeElementArgs *args)
 			return;
 		}
 	}
-	panic("can't find tree %s %d", __FILE__, __LINE__);
+	Tcl_Panic("can't find tree %s %d", __FILE__, __LINE__);
 }
 
 static int WorldChangedAssign(TreeElementArgs *args)

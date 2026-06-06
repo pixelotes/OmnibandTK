@@ -192,7 +192,7 @@ Tcl_CreateExitHandler(ExitProc_db_dump_allocs, NULL);
 	return interp;
 
 error:
-	WishPanic(interp->result);
+	WishPanic(Tcl_GetStringResult(interp)); /* Tcl 8.6: interp->result eliminado */
 	return NULL;
 }
 

@@ -51,7 +51,9 @@ proc NSStatus::InitModule {} {
 	if {[info tclversion] >= 8.5} {
 		foreach loc $::msgcat::Loclist {
 			if {$loc eq ""} continue
-			dict for {key value} [dict get $::msgcat::Msgs $loc ::NSStatus] {
+			# msgcat 1.6 (Tcl 8.6) nests Msgs as namespace->locale (was locale->namespace)
+			if {![dict exists $::msgcat::Msgs ::NSStatus $loc]} continue
+			dict for {key value} [dict get $::msgcat::Msgs ::NSStatus $loc] {
 				lappend strings $value
 				set Trans($key) $value
 			}
@@ -541,7 +543,9 @@ proc NSStatus::InitStatusMessage {} {
 	foreach loc $::msgcat::Loclist {
 		if {[info tclversion] >= 8.5} {
 			if {$loc eq ""} continue
-			dict for {key value} [dict get $::msgcat::Msgs $loc ::NSStatus] {
+			# msgcat 1.6 (Tcl 8.6) nests Msgs as namespace->locale (was locale->namespace)
+			if {![dict exists $::msgcat::Msgs ::NSStatus $loc]} continue
+			dict for {key value} [dict get $::msgcat::Msgs ::NSStatus $loc] {
 				lappend strings $value
 			}
 		} else {
@@ -693,7 +697,9 @@ proc NSStatus::ValueChanged_font_status {} {
 	foreach loc $::msgcat::Loclist {
 		if {[info tclversion] >= 8.5} {
 			if {$loc eq ""} continue
-			dict for {key value} [dict get $::msgcat::Msgs $loc ::NSStatus] {
+			# msgcat 1.6 (Tcl 8.6) nests Msgs as namespace->locale (was locale->namespace)
+			if {![dict exists $::msgcat::Msgs ::NSStatus $loc]} continue
+			dict for {key value} [dict get $::msgcat::Msgs ::NSStatus $loc] {
 				set string $value
 				lappend strings [format $string 9999]
 			}

@@ -367,7 +367,7 @@ int Setting_Add(SettingGroupToken token, SettingType *data)
 	/* Create a new hash table entry with key = setting keyword */
 	hPtr = Tcl_CreateHashEntry(&group->hash, settingPtr->name, &new);
 	if (!new)
-		panic("Setting_Add: duplicate setting \"%s\"", settingPtr->name);
+		Tcl_Panic("Setting_Add: duplicate setting \"%s\"", settingPtr->name);
 
 	/* Set the hash table entry with value = setting[] index */
 	Tcl_SetHashValue(hPtr, group->count - 1);

@@ -36,22 +36,22 @@ P:^_Control-9\r
 A:\m\\.1
 P:^_End\r
 
-A:\m\\.2
+A:\m2
 P:^_Down\r
 
 A:\m\\.3
 P:^_Next\r
 
-A:\m\\.4
+A:\m4
 P:^_Left\r
 
-A:\m\\.6
+A:\m6
 P:^_Right\r
 
 A:\m\\.7
 P:^_Home\r
 
-A:\m\\.8
+A:\m8
 P:^_Up\r
 
 A:\m\\.9

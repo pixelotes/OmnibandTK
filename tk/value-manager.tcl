@@ -379,7 +379,9 @@ if 0 {
 	Manage know_unseen_artifacts 0
 
 	if {[variant ANGBANDTK]} {
-		Manage borg,prefix ""
+		# Default to the APW borg (apw292) so it auto-loads at preinit if its
+		# shared lib is staged; falls back to the chooser window if absent.
+		Manage borg,prefix "apw292"
 	}
 
 	### One-time warnings to the user.

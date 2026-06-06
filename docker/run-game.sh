@@ -7,8 +7,8 @@
 # timeout; si llega al bucle de eventos sin volcar errorInfo, es buena señal.
 set -uo pipefail
 
-PREFIX=/opt/tcltk857
-BD=/work/build-docker
+PREFIX="${OMNI_TCL_PREFIX:-/opt/tcltk8616}"
+BD=${BD:-/work/build-docker}
 STAGE=${BD}/stage
 LOG=${BD}/run.log
 VARIANT="${1:-AngbandTk}"
@@ -23,6 +23,12 @@ for vso in "${BD}"/variant/*/angband.so; do
     v=$(basename "$(dirname "${vso}")")
     cp -a "/work/variant/${v}" "${STAGE}/variant/${v}"
     cp "${vso}" "${STAGE}/variant/${v}/angband.so"
+    # Borg (jugador automático): si se compiló su .so, stagearlo donde el runtime
+    # lo busca (angband_borg preinit -> Path borg <prefix> borg.so).
+    for borgso in "${BD}/variant/${v}/borg"/*/borg.so; do
+        [ -f "${borgso}" ] || continue
+        cp "${borgso}" "${STAGE}/variant/${v}/borg/$(basename "$(dirname "${borgso}")")/borg.so"
+    done
 done
 
 # Binarios compilados -> sus posiciones de runtime
@@ -34,18 +40,18 @@ cp "${BD}/src/dbwin/dbwin.so"                    "${STAGE}/lib/dbwin/dbwin.so"
 cp "$(find /usr/lib -name 'libz.so.1' 2>/dev/null | head -1)" "${STAGE}/lib/libz.so"
 
 # treectrl: reemplazar el dir del repo por el instalado entero (su pkgIndex carga
-# el .so con el nombre correcto -libtreectrl2.2.so- + trae treectrl.tcl).
-rm -rf "${STAGE}/lib/treectrl2.2.9"
-cp -a "${PREFIX}/lib/treectrl2.2.9" "${STAGE}/lib/treectrl2.2.9"
+# el .so con el nombre correcto -libtreectrl2.4.so- + trae treectrl.tcl).
+rm -rf "${STAGE}"/lib/treectrl2.*
+cp -a "${PREFIX}"/lib/treectrl2.* "${STAGE}/lib/"
 # Tkhtml3 (necesario en birth): .so + parche del pkgIndex (cargaba Tkhtml30.dll)
 cp "${PREFIX}/lib/Tkhtml3.0/libTkhtml3.0.so" "${STAGE}/lib/TkHtml3.0/"
 sed -i 's/Tkhtml30\.dll/libTkhtml3.0.so/' "${STAGE}/lib/TkHtml3.0/pkgIndex.tcl"
 echo "--- pkgIndex de treectrl tras el parche ---"
-grep -n "load" "${STAGE}/lib/treectrl2.2.9/pkgIndex.tcl"
+grep -n "load" "${STAGE}"/lib/treectrl2.*/pkgIndex.tcl
 
 # Entorno Tcl/Tk
-export TCL_LIBRARY="${PREFIX}/lib/tcl8.5"
-export TK_LIBRARY="${PREFIX}/lib/tk8.5"
+export TCL_LIBRARY="${PREFIX}/lib/tcl8.6"
+export TK_LIBRARY="${PREFIX}/lib/tk8.6"
 export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH:-}"
 export HOME=/tmp
 

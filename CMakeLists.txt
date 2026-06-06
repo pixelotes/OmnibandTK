@@ -13,12 +13,12 @@ GET_FILENAME_COMPONENT (ROOT
 )
         
 SET (TCL_INSTALL_DIR
-    ${ROOT}/TclTk-8.5.7
+    ${ROOT}/TclTk-8.6.16
     CACHE PATH
     "Installation prefix of Tcl/Tk"
 )
 SET (TCL_SOURCE_DIR
-    ${ROOT}/tcl8.5.7
+    ${ROOT}/tcl8.6.16
     CACHE PATH
     "Path to Tcl sources"
 )
@@ -31,7 +31,7 @@ IF (PLATFORM_SDL)
 	)
 ELSE (PLATFORM_SDL)
 	SET (TK_SOURCE_DIR
-		${ROOT}/tk8.5.7
+		${ROOT}/tk8.6.16
 		CACHE PATH
 		"Path to Tk sources"
 	)
@@ -39,7 +39,7 @@ ENDIF (PLATFORM_SDL)
 
 FIND_LIBRARY (TCL_LIBRARY
     NAMES
-    tcl85 tcl85g tcl8.5 tcl8.5g
+    tcl86 tcl8.6 tcl85 tcl85g tcl8.5 tcl8.5g
     PATHS
     "${TCL_INSTALL_DIR}/lib"
 )
@@ -54,7 +54,7 @@ IF (PLATFORM_SDL)
 ELSE (PLATFORM_SDL)
 	FIND_LIBRARY (TK_LIBRARY
 		NAMES
-		tk85 tk85g tk8.5 tk8.5g
+		tk86 tk8.6 tk85 tk85g tk8.5 tk8.5g
 		PATHS
 		"${TCL_INSTALL_DIR}/lib"
 	)
@@ -62,7 +62,7 @@ ENDIF (PLATFORM_SDL)
 
 FIND_LIBRARY (TCL_STUB_LIBRARY
     NAMES
-    tclstub85 tclstub85g tclstub8.5 tclstub8.5.g
+    tclstub86 tclstub8.6 tclstub85 tclstub85g tclstub8.5
     PATHS
     "${TCL_INSTALL_DIR}/lib"
 )
@@ -77,7 +77,7 @@ IF (PLATFORM_SDL)
 ELSE (PLATFORM_SDL)
 	FIND_LIBRARY (TK_STUB_LIBRARY
 		NAMES
-		tkstub85 tkstub85g tkstub8.5 tkstub8.5g
+		tkstub86 tkstub8.6 tkstub85 tkstub85g tkstub8.5
 		PATHS
 		"${TCL_INSTALL_DIR}/lib"
 	)
@@ -85,14 +85,14 @@ ENDIF (PLATFORM_SDL)
 
 FIND_PROGRAM (TCL_TCLSH
     NAMES
-    tclsh85 tclsh85g tclsh8.5 tclsh8.5g
+    tclsh86 tclsh8.6 tclsh85 tclsh8.5
     PATHS
     "${TCL_INSTALL_DIR}/bin"
 )   
 
 FIND_PROGRAM (TK_WISH
     NAMES
-    wish85 wish85g wish8.5 wish8.5g
+    wish86 wish8.6 wish85 wish8.5
     PATHS
     "${TCL_INSTALL_DIR}/bin"
 )   

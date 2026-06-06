@@ -63,15 +63,15 @@ P:^_Shift-KP_9\r
 # Arrow
 #
 
-A:\e\e\e\\.2
+A:\e\e\e2
 P:^_Down\r
 
-A:\e\e\e\\.4
+A:\e\e\e4
 P:^_Left\r
 
-A:\e\e\e\\.6
+A:\e\e\e6
 P:^_Right\r
 
-A:\e\e\e\\.8
+A:\e\e\e8
 P:^_Up\r
 

@@ -45,8 +45,9 @@ proc MsgCatInit {args} {
 	set ns [uplevel {namespace current}]
 	foreach loc $::msgcat::Loclist {
 		if {[info tclversion] >= 8.5} {
-			if {[dict exists $::msgcat::Msgs $loc $ns]} {
-				dict unset ::msgcat::Msgs $loc $ns
+			# msgcat 1.6 (Tcl 8.6) nests Msgs as namespace->locale (was locale->namespace)
+			if {[dict exists $::msgcat::Msgs $ns $loc]} {
+				dict unset ::msgcat::Msgs $ns $loc
 			}
 		} else {
 			array unset ::msgcat::Msgs $loc,$ns,*

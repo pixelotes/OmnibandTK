@@ -46,9 +46,16 @@ int objcmd_fontdesc(ClientData dummy, Tcl_Interp *interp, int objc, Tcl_Obj *CON
 
 	fontPtr = (TkFont *) tkfont;
 
+	/*
+	 * NOTE: Tk 8.6 changed TkFontAttributes.size from int to double. Passing
+	 * a double to the "%d" slot misaligns the varargs on 64-bit ABIs (the
+	 * double travels in an FP register, so "%d" reads the next integer arg --
+	 * the weight string pointer -- and every following arg shifts, making
+	 * "-weight" come out as "roman"). Cast to int to restore the 8.5 layout.
+	 */
 	(void) sprintf(buf, "-family {%s} -size %d -weight %s -slant %s "
 		"-underline %d -overstrike %d",
-		fontPtr->fa.family, fontPtr->fa.size,
+		fontPtr->fa.family, (int) fontPtr->fa.size,
 		(fontPtr->fa.weight == TK_FW_BOLD) ? "bold" : "normal",
 		(fontPtr->fa.slant == TK_FS_ITALIC) ? "italic" : "roman",
 		fontPtr->fa.underline,

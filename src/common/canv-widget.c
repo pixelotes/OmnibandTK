@@ -76,7 +76,7 @@ static char *Assign_PrintProc _ANSI_ARGS_((
 
 /* Not exported from tk.dll in 8.5+ */
 int
-TkStateParseProc(
+CanvasStateParseProc(
     ClientData clientData,	/* some flags.*/
     Tcl_Interp *interp,		/* Used for reporting errors. */
     Tk_Window tkwin,		/* Window containing canvas widget. */
@@ -133,7 +133,7 @@ TkStateParseProc(
 
 /* Not exported from tk.dll in 8.5+ */
 char *
-TkStatePrintProc(
+CanvasStatePrintProc(
     ClientData clientData,	/* Ignored. */
     Tk_Window tkwin,		/* Window containing canvas widget. */
     char *widgRec,		/* Pointer to record for item. */
@@ -167,10 +167,10 @@ TkStatePrintProc(
  * It happens because these functions are DLLIMPORT
  */
 #if defined(PLATFORM_WIN) && defined(__GNUC__) && defined(__declspec)
-extern int TkStateParseProc _ANSI_ARGS_((ClientData clientData,
+extern int CanvasStateParseProc _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST char *value,
 	char *widgRec, int offset));
-extern char *TkStatePrintProc _ANSI_ARGS_((ClientData clientData,
+extern char *CanvasStatePrintProc _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 #endif
@@ -181,14 +181,14 @@ static int StateParseProc(ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST char *value,
 	char *widgRec, int offset)
 {
-	return TkStateParseProc(clientData, interp, tkwin, value,
+	return CanvasStateParseProc(clientData, interp, tkwin, value,
 		widgRec, offset);
 }
 static char *StatePrintProc(ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr)
 {
-	return TkStatePrintProc(clientData, tkwin, widgRec, offset,
+	return CanvasStatePrintProc(clientData, tkwin, widgRec, offset,
 		freeProcPtr);
 }
 
@@ -201,8 +201,8 @@ static Tk_CustomOption stateOption = {
 #else
 
 static Tk_CustomOption stateOption = {
-    (Tk_OptionParseProc *) TkStateParseProc,
-    TkStatePrintProc,
+    (Tk_OptionParseProc *) CanvasStateParseProc,
+    CanvasStatePrintProc,
     (ClientData) 2
 };
 
@@ -498,8 +498,9 @@ WidgetCoords(
     }
     else
     {
-		sprintf(interp->result,
-			"wrong # coordinates: expected 0 or 2, got %d", argc);
+		/* Tcl 8.6: interp->result eliminado -> Tcl_SetObjResult/Tcl_ObjPrintf */
+		Tcl_SetObjResult(interp, Tcl_ObjPrintf(
+			"wrong # coordinates: expected 0 or 2, got %d", argc));
 		return TCL_ERROR;
     }
     return TCL_OK;
@@ -586,7 +587,7 @@ DeleteWidget(
 			return;
 		}
 	}
-	panic("can't find canvas %s %d", __FILE__, __LINE__);
+	Tcl_Panic("can't find canvas %s %d", __FILE__, __LINE__);
 }
 
 static void

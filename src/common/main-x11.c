@@ -35,7 +35,7 @@ static bool check_file(cptr s)
 {
 	struct stat statBuf;
 
-	if (TclStat(s, &statBuf)) return (FALSE);
+	if (stat(s, &statBuf)) return (FALSE);
 	if (S_ISDIR(statBuf.st_mode)) return (FALSE);
 	return (TRUE);
 }
@@ -48,7 +48,7 @@ bool check_dir(cptr s)
 {
 	struct stat statBuf;
 
-	if (TclStat(s, &statBuf)) return (FALSE);
+	if (stat(s, &statBuf)) return (FALSE);
 	if (!S_ISDIR(statBuf.st_mode)) return (FALSE);
 	return (TRUE);
 }
