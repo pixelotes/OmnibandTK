@@ -31,6 +31,7 @@ fi
 # Targets: librerías comunes + las 4 variantes. Sin BASS.
 TARGETS="misc libdbwin dbwin common sound-nocard boot \
          angband_library kangband_library oangband_library zangband_library \
+         tome_library \
          borg"
 
 echo "=== make (${TARGETS}) ===" | tee -a "${LOG}"

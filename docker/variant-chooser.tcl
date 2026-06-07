@@ -14,6 +14,7 @@ array set INFO {
     KAngbandTk  {"Kangband"  "Variant with more races, classes and monsters"}
     OAngbandTk  {"Oangband"  "Redesigned classes and combat system"}
     ZAngbandTk  {"ZAngband"  "Zelazny's world: towns, quests and magic"}
+    ToMETk      {"ToME"      "Troubles of Middle-Earth: Lua-scripted, large world"}
 }
 
 proc pick {v} { puts $v; flush stdout; exit 0 }
