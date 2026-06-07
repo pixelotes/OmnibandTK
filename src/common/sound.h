@@ -20,10 +20,10 @@
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
 #define SNDGRP_MAX 4
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(OANGBANDTK) || defined(ZANGBANDTK)
+#if defined(OANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 #define SNDGRP_MARTIAL_ART 4
 #define SNDGRP_MAX 5
-#endif /* ZANGBANDTK */
+#endif /* OANGBANDTK, ZANGBANDTK, TOMETK */
 
 /* SNDGRP_EVENT constants */
 enum {
@@ -190,14 +190,14 @@ SND_DUNGEON
 SND_DUNGEON,
 SND_QUEST_DONE
 #endif /* KANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 SND_WILD_DAY,
 SND_WILD_NIGHT,
 SND_DUNGEON,
 SND_QUEST_DONE,
 SND_MUTATE,
 SND_LOSE_MUTATION
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 };
 
 typedef char *SoundId;

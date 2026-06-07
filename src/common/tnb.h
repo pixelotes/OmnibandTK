@@ -223,10 +223,19 @@
 #define p_ptr_auto_roller autoroller
 #define p_ptr_maximize maximize
 #define p_ptr_preserve preserve
+#define inventory p_ptr->inventory
+#define p_ptr_total_weight calc_total_weight() /* ToME: peso es local, vía función */
+#define p_ptr_health_who health_who
+#define p_ptr_monster_race_idx monster_race_idx
 #define Rand_normal randnor
 #define MAX_VALID_R_IDX max_r_idx
 #define set_user_inscription(o,q) o->note = quark_add(q)
 #define get_user_inscription(o) quark_str(o->note)
+#define object_flags(o,f1,f2,f3) object_flags((o),(f1),(f2),(f3),&tnb_tome_f4,&tnb_tome_f5,&tnb_tome_esp)
+#define object_flags_known(o,f1,f2,f3) object_flags_known((o),(f1),(f2),(f3),&tnb_tome_f4,&tnb_tome_f5,&tnb_tome_esp)
+#define item_activation(o) item_activation((o),0)
+#define look_mon_desc(buf,m) strcpy((buf), look_mon_desc(m))
+#define sound angtk_sound
 /* Constantes que ToME no define o nombra distinto */
 #define A_MAX 6                       /* ToME: A_STR..A_CHR, sin A_MAX */
 #define MAX_CLASS max_c_idx
@@ -234,9 +243,40 @@
 #define TOWN_DAWN (10L * DAY)         /* ToME: dawn = turn % (10*DAY) */
 #define FEAT_SHOP_HEAD FEAT_SHOP      /* ToME: una sola feature de tienda */
 #define FEAT_SHOP_TAIL FEAT_SHOP
+#define FEAT_INVIS FEAT_NONE
+#define TR3_LITE TR3_LITE1
+#define NAME_TEXT_TYPE FLD_STRING
 #define VERSION_NAME "ToME"
 #define player_is_here(y,x) \
 	(((y) == py) && ((x) == px))
+
+static u32b tnb_tome_f4, tnb_tome_f5, tnb_tome_esp;
+
+typedef struct high_score high_score;
+struct high_score
+{
+	char what[8];
+	char pts[10];
+	char gold[10];
+	char turns[10];
+	char day[10];
+	char who[16];
+	char uid[8];
+	char sex[2];
+	char p_r[3];
+	char p_s[3];
+	char p_c[3];
+	char p_cs[3];
+	char cur_lev[4];
+	char cur_dun[4];
+	char max_lev[4];
+	char max_dun[4];
+	char arena_number[4];
+	char inside_arena[4];
+	char inside_quest[4];
+	char exit_bldg[4];
+	char how[32];
+};
 #endif /* TOMETK */
 
 /*
@@ -262,7 +302,7 @@
 #define DECLARE_LORE(v) LORE_TYPE *v
 #define AT_LORE(n) &LORE_NTH(n)
 
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 #define ART_CURNUM(a) a->cur_num
 #endif
 #if defined(OANGBANDTK)
