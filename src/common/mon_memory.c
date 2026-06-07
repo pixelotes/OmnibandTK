@@ -10,7 +10,7 @@
  * included in all such copies.
  */
 
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 
 #include <tcl.h>
 #include "angband.h"
@@ -325,7 +325,7 @@ void MonsterMemoryToArray(int r_idx, Tcl_Obj *objPtr)
 	l_ptr = &LORE_NTH(r_idx);
 
 	/* Cheat -- know everything */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (cheat_know)
 #endif /* */
 #if defined(OANGBANDTK)
@@ -706,7 +706,7 @@ void MonsterMemoryToArray(int r_idx, Tcl_Obj *objPtr)
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
 	if (flags4 & (RF4_XXX2))		vp[vn++] = "do something";
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags4 & (RF4_XXX3))		vp[vn++] = "do something";
 #endif /* */
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
@@ -715,7 +715,7 @@ void MonsterMemoryToArray(int r_idx, Tcl_Obj *objPtr)
 #if defined(ZANGBANDTK)
     if (flags4 & (RF4_ROCKET))		vp[vn++] = "shoot a rocket";
 #endif /* ZANGBANDTK */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags4 & (RF4_ARROW_1))		vp[vn++] = "fire an arrow";
 	if (flags4 & (RF4_ARROW_2))		vp[vn++] = "fire arrows";
 #endif /* */
@@ -873,14 +873,14 @@ void MonsterMemoryToArray(int r_idx, Tcl_Obj *objPtr)
 	if (flags6 & (RF6_S_ANT))		vp[vn++] = "summon ants";
 	if (flags6 & (RF6_S_SPIDER))		vp[vn++] = "summon spiders";
 	if (flags6 & (RF6_S_HOUND))		vp[vn++] = "summon hounds";
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags6 & (RF6_S_HYDRA))		vp[vn++] = "summon hydras";
 #endif /* */
 #if defined(OANGBANDTK)
 	if (flags6 & (RF6_XXX9))		vp[vn++] = "do something";
 	if (flags6 & (RF6_XXX10))		vp[vn++] = "do something";
 #endif /* */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags6 & (RF6_S_ANGEL))		vp[vn++] = "summon an angel";
 #endif
 	if (flags6 & (RF6_S_DEMON))		vp[vn++] = "summon a demon";
@@ -1159,7 +1159,7 @@ void MonsterMemoryToArray(int r_idx, Tcl_Obj *objPtr)
 		if (l_ptr->LF(drop_item))
 		{
 			/* Handle singular "an" */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 			if (sin) roff_append("drop", "n");
 #endif /* */
 #if defined(OANGBANDTK)
@@ -1267,7 +1267,7 @@ void MonsterMemoryToArray(int r_idx, Tcl_Obj *objPtr)
 			case RBM_XXX4:	break;
 			case RBM_BEG:	p = "beg"; break;
 			case RBM_INSULT:	p = "insult"; break;
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 			case RBM_MOAN:	p = "moan"; break;
 #endif /* */
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
@@ -1381,7 +1381,7 @@ void MonsterMemoryToArray(int r_idx, Tcl_Obj *objPtr)
 	}
 
 	/* Cheat -- know everything */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (cheat_know)
 #endif /* */
 #if defined(OANGBANDTK)

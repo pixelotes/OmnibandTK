@@ -199,8 +199,8 @@
 #define op_ptr_delay_factor delay_factor
 #define op_ptr_hitpoint_warn hitpoint_warn
 #define op_ptr_full_name player_name
-#define p_ptr_py py
-#define p_ptr_px px
+#define p_ptr_py p_ptr->py /* ToME: posición en p_ptr, no global */
+#define p_ptr_px p_ptr->px
 #define p_ptr_running running
 #define p_ptr_resting resting
 #define p_ptr_command_arg command_arg
@@ -248,9 +248,22 @@
 #define CAVE_LITE (CAVE_PLIT | CAVE_MLIT)
 #define TR3_LITE TR3_LITE1
 #define NAME_TEXT_TYPE FLD_STRING
+/*
+ * Flags de monstruo que ToME reubica o no tiene; 0 = chequeo no-op en el
+ * monster recall de la cola (r_info.c/mon_memory.c). TODO: ToME mueve MULTIPLY
+ * a flags4 (RF4_MULTIPLY) y carece de HURT_FIRE/HURT_COLD; las XXX eran slots
+ * sin usar en ZAngband que ToME reaprovecha.
+ */
+#define RF2_MULTIPLY 0
+#define RF3_HURT_FIRE 0
+#define RF3_HURT_COLD 0
+#define RF4_XXX3 0
+#define RF6_XXX3 0
+#define RF6_XXX4 0
+#define RF6_XXX5 0
 #define VERSION_NAME "ToME"
 #define player_is_here(y,x) \
-	(((y) == py) && ((x) == px))
+	(((y) == p_ptr->py) && ((x) == p_ptr->px))
 
 static u32b tnb_tome_f4, tnb_tome_f5, tnb_tome_esp;
 

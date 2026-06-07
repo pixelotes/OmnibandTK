@@ -10,7 +10,7 @@
  * included in all such copies.
  */
 
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 
 #include "angband.h"
 #include "tnb.h"
@@ -211,7 +211,7 @@ long angtk_roff(int r_idx, char *buffer)
 	l_ptr = &LORE_NTH(r_idx);
 
 	/* Cheat -- know everything */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (cheat_know)
 #endif /* */
 #if defined(OANGBANDTK)
@@ -514,7 +514,7 @@ long angtk_roff(int r_idx, char *buffer)
 	{
 		if (depth_in_feet)
 		{
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 			roff2fmt(
 				"%^s is normally found at depths of %d feet",
 				wd_he[msex], r_ptr->level * 50);
@@ -540,7 +540,7 @@ long angtk_roff(int r_idx, char *buffer)
 		}
 		else
 		{
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 			roff2fmt(
 				"%^s is normally found on dungeon level %d",
 			    wd_he[msex], r_ptr->level);
@@ -813,7 +813,7 @@ long angtk_roff(int r_idx, char *buffer)
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
 	if (flags4 & (RF4_XXX2))		vp[vn++] = "do something";
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags4 & (RF4_XXX3))		vp[vn++] = "do something";
 #endif /* */
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
@@ -822,7 +822,7 @@ long angtk_roff(int r_idx, char *buffer)
 #if defined(ZANGBANDTK)
     if (flags4 & (RF4_ROCKET))		vp[vn++] = "shoot a rocket";
 #endif /* ZANGBANDTK */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags4 & (RF4_ARROW_1))		vp[vn++] = "fire an arrow";
 	if (flags4 & (RF4_ARROW_2))		vp[vn++] = "fire arrows";
 #endif /* */
@@ -1003,14 +1003,14 @@ long angtk_roff(int r_idx, char *buffer)
 	if (flags6 & (RF6_S_ANT))		vp[vn++] = "summon ants";
 	if (flags6 & (RF6_S_SPIDER))		vp[vn++] = "summon spiders";
 	if (flags6 & (RF6_S_HOUND))		vp[vn++] = "summon hounds";
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags6 & (RF6_S_HYDRA))		vp[vn++] = "summon hydras";
 #endif /* */
 #if defined(OANGBANDTK)
 	if (flags6 & (RF6_XXX9))		vp[vn++] = "do something";
 	if (flags6 & (RF6_XXX10))		vp[vn++] = "do something";
 #endif /* */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (flags6 & (RF6_S_ANGEL))		vp[vn++] = "summon an angel";
 #endif
 	if (flags6 & (RF6_S_DEMON))		vp[vn++] = "summon a demon";
@@ -1335,7 +1335,7 @@ long angtk_roff(int r_idx, char *buffer)
 	{
 		cptr act;
 
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 		if (r_ptr->sleep > 200)
 		{
 			act = "prefers to ignore";
@@ -1454,7 +1454,7 @@ long angtk_roff(int r_idx, char *buffer)
 		if (l_ptr->LF(drop_item))
 		{
 			/* Handle singular "an" */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 			if (sin) roff2("n");
 #endif /* */
 #if defined(OANGBANDTK)
@@ -1565,7 +1565,7 @@ long angtk_roff(int r_idx, char *buffer)
 			case RBM_XXX4:	break;
 			case RBM_BEG:	p = "beg"; break;
 			case RBM_INSULT:	p = "insult"; break;
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 			case RBM_MOAN:	p = "moan"; break;
 #endif /* */
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
@@ -1714,7 +1714,7 @@ long angtk_roff(int r_idx, char *buffer)
 	}
 
 	/* Cheat -- know everything */
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 	if (cheat_know)
 #endif /* */
 #if defined(OANGBANDTK)
