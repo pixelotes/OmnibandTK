@@ -217,9 +217,9 @@ static int SettingProc_hitpoint_warn(SettingParam *param)
 #if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 #define cheat_variable(i) op_ptr->opt[OPT_CHEAT+i]
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 #define cheat_variable(i) (*cheat_info[i].o_var)
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 
 /* Setting callback for cheating options */
 static int SettingProc_cheat(SettingParam *param)
@@ -508,12 +508,12 @@ void settings_init(void)
 		setting.name = option_text[i];
 		setting.desc = option_desc[i];
 #endif /* ANGBANDTK, KANGBANDTK, OANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 	for (i = 0; option_info[i].o_desc; i++)
 	{
 		setting.name = option_info[i].o_text;
 		setting.desc = option_info[i].o_desc;
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 		setting.proc = SettingProc_opt;
 		setting.data = (void *) i;
 
