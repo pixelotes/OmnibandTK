@@ -36,24 +36,53 @@ P:^_Control-9\r
 A:\m\\.1
 P:^_End\r
 
-A:\m2
+A:\m\\;2
 P:^_Down\r
 
 A:\m\\.3
 P:^_Next\r
 
-A:\m4
+A:\m\\;4
 P:^_Left\r
 
-A:\m6
+A:\m\\;6
 P:^_Right\r
 
 A:\m\\.7
 P:^_Home\r
 
-A:\m8
+A:\m\\;8
 P:^_Up\r
 
 A:\m\\.9
 P:^_Prior\r
+
+
+#
+# Keypad (sin modificador) -> andar
+#
+
+A:\m\\;8
+P:^_KP_Up\r
+
+A:\m\\;2
+P:^_KP_Down\r
+
+A:\m\\;4
+P:^_KP_Left\r
+
+A:\m\\;6
+P:^_KP_Right\r
+
+A:\m\\;7
+P:^_KP_Home\r
+
+A:\m\\;9
+P:^_KP_Prior\r
+
+A:\m\\;1
+P:^_KP_End\r
+
+A:\m\\;3
+P:^_KP_Next\r
 
