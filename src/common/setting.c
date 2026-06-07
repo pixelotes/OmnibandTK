@@ -227,6 +227,15 @@ static bool *tome_cheat_vars[] = {
 	&cheat_xtra, &cheat_know, &cheat_live
 };
 #define cheat_variable(i) (*tome_cheat_vars[i])
+static cptr tome_cheat_names[] = {
+	"cheat_peek", "cheat_hear", "cheat_room",
+	"cheat_xtra", "cheat_know", "cheat_live"
+};
+static cptr tome_cheat_descs[] = {
+	"Peek into object creation", "Peek into monster creation",
+	"Peek into dungeon creation", "Peek into something",
+	"Know complete monster info", "Allow player to avoid death"
+};
 #endif /* TOMETK */
 
 /* Setting callback for cheating options */
@@ -600,6 +609,10 @@ void settings_init(void)
 		setting.name = cheat_info[i].o_text;
 		setting.desc = cheat_info[i].o_desc;
 #endif /* ZANGBANDTK */
+#if defined(TOMETK)
+		setting.name = tome_cheat_names[i];
+		setting.desc = tome_cheat_descs[i];
+#endif /* TOMETK */
 		setting.proc = SettingProc_cheat;
 		setting.data = (void *) i;
 

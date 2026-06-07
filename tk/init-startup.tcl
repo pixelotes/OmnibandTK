@@ -40,7 +40,7 @@ proc variant {args} {
 
 	foreach name $args {
 		if {$::DEBUG} {
-			set variantList [list ANGBANDTK KANGBANDTK OANGBANDTK ZANGBANDTK]
+			set variantList [list ANGBANDTK KANGBANDTK OANGBANDTK ZANGBANDTK TOMETK]
 			if {[lsearch -exact $variantList $name] == -1} {
 				tk_messageBox -message "unknown variant \"$name\""
 			}
@@ -1389,6 +1389,17 @@ Global tclCompiler 0
 		set Angband(copy) [mc original-z]
 
 	# ZANGBANDTK
+	}
+
+	if {[variant TOMETK]} {
+
+		# Global program name
+		set Angband(name) "ToME"
+
+		# Global copyright blurb
+		set Angband(copy) "Troubles of Middle-Earth (ToME) 2.2.2"
+
+	# TOMETK
 	}
 
 	# The Tk console

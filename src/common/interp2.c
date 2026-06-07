@@ -2013,6 +2013,11 @@ objcmd_game(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST 
 			FormatResult(interp, "%d.%d.%d", FAKE_VER_MAJOR,
 				FAKE_VER_MINOR, FAKE_VER_PATCH);
 #endif /* ZANGBANDTK */
+#if defined(TOMETK)
+			/* TODO ToME: la versión real la fija el módulo Lua en runtime
+			 * (version_major/minor/patch); fijada a 2.2.2 = version.txt. */
+			FormatResult(interp, "%d.%d.%d", 2, 2, 2);
+#endif /* TOMETK */
 			break;
 
 		case IDX_VARIANT: /* variant */
@@ -2029,6 +2034,9 @@ objcmd_game(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST 
 #if defined(ZANGBANDTK)
 			StaticResult(interp, "ZANGBANDTK");
 #endif /* ZANGBANDTK */
+#if defined(TOMETK)
+			StaticResult(interp, "TOMETK");
+#endif /* TOMETK */
 			break;
 
 		case IDX_SAVEFILE: /* savefile */
