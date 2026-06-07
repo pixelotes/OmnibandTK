@@ -2051,8 +2051,14 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 			break;
 
 		case IDX_TITLE: /* title */
+#if defined(TOMETK)
+			/* ToME: títulos vía cp_ptr->titles[] (offsets dentro de c_name) */
+			ExtToUtf_SetResult(interp,
+				(char *) (c_name + cp_ptr->titles[(p_ptr->lev-1)/5]));
+#else
 			ExtToUtf_SetResult(interp,
 				(char *) player_title[p_ptr->pclass][(p_ptr->lev-1)/5]);
+#endif
 			break;
 
 		case IDX_TO_DAM: /* to_dam */
@@ -2068,7 +2074,11 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 			break;
 
 		case IDX_TOTAL_WEIGHT: /* total_weight */
+#if defined(TOMETK)
+			IntResult(interp, calc_total_weight());
+#else
 			IntResult(interp, p_ptr->total_weight);
+#endif
 			break;
 
 		case IDX_MAXIMIZE: /* maximize */
@@ -2151,6 +2161,12 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 					(noscore & (cheat_info[i].o_set * 256 + cheat_info[i].o_bit)) != 0) != TCL_OK)
 				{
 #endif /* ZANGBANDTK */
+#if defined(TOMETK)
+				/* TODO ToME: opciones cheat son bools sueltos (cheat_peek/
+				 * hear/room/xtra/know/live), no un array cheat_info[]. */
+				if (0)
+				{
+#endif /* TOMETK */
 					return TCL_ERROR;
 				}
 			}
@@ -2163,6 +2179,9 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 #if defined(ZANGBANDTK)
 			if (!p_ptr->realm1)
 #endif /* ZANGBANDTK */
+#if defined(TOMETK)
+			if (0) /* TODO ToME: magia por skills, sin realm1/spell_book */
+#endif /* TOMETK */
 			{
 				StaticResult(interp, "character cannot read books");
 				return TCL_ERROR;
@@ -2185,10 +2204,17 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 #if defined(ZANGBANDTK)
 			if (!p_ptr->realm1)
 #endif /* ZANGBANDTK */
+#if defined(TOMETK)
+			if (0) /* TODO ToME: magia por skills, sin realm1/spell_book */
+#endif /* TOMETK */
 			{
 				StaticResult(interp, "character cannot read books");
 				return TCL_ERROR;
 			}
+#if defined(TOMETK)
+			/* TODO ToME: spell/prayer se decide por skill, no por spell_book */
+			t = "spell";
+#else
 			switch (mp_ptr->spell_book)
 			{
 #if defined(ANGBANDTK)
@@ -2217,6 +2243,7 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 				quit_fmt("unhandled mp_ptr->spell_book %d",
 					mp_ptr->spell_book);
 			}
+#endif /* TOMETK */
 			StaticResult(interp, t);
 			break;
 
@@ -2238,10 +2265,18 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 						"bad m_list index \"%d\": must be between 0 and %d",
 						m_idx, (int) m_max - 1);
 				}
+#if defined(TOMETK)
+				health_who = m_idx; /* ToME: global, no miembro de p_ptr */
+#else
 				p_ptr->health_who = m_idx;
+#endif
 				break;
 			}
+#if defined(TOMETK)
+			IntResult(interp, health_who);
+#else
 			IntResult(interp, p_ptr->health_who);
+#endif
 			break;
 
 		case IDX_MONSTER_RACE_IDX: /* monster_race_idx */
@@ -2263,10 +2298,18 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 						r_idx, (int) MAX_VALID_R_IDX - 1);
 					return TCL_ERROR;
 				}
+#if defined(TOMETK)
+				monster_race_idx = r_idx; /* ToME: global, no miembro de p_ptr */
+#else
 				p_ptr->monster_race_idx = r_idx;
+#endif
 				break;
 			}
+#if defined(TOMETK)
+			IntResult(interp, monster_race_idx);
+#else
 			IntResult(interp, p_ptr->monster_race_idx);
+#endif
 			break;
 
 		case IDX_LIFE_RATING: /* life_rating */

@@ -97,7 +97,7 @@ static char *keyword_birth[] = {
 /*
  * A structure to hold "rolled" information
  */
-struct birther
+struct tnb_birther
 {
 	s16b age;
 	s16b wt;
@@ -127,7 +127,7 @@ struct birth_info
 {
 	int stage;
 	s16b stat_use[A_MAX];
-	struct birther prev;
+	struct tnb_birther prev;
 	bool has_prev;
 	bool valid;
 	int stats[A_MAX];
@@ -140,6 +140,25 @@ struct birth_info
 };
 
 static struct birth_info *birth_ptr = NULL;
+
+#if defined(TOMETK)
+/*
+ * ToME genera el historial del personaje en su propio engine. Esta tabla
+ * mínima existe solo para que validate_bg_aux() de la cola compile (su
+ * hist_type tiene 'cptr info', incompatible con el 's32b info' de ToME).
+ * TODO: integrar con la generación de historia de ToME.
+ */
+typedef struct tnb_hist_type tnb_hist_type;
+struct tnb_hist_type
+{
+	cptr info;
+	byte roll;
+	byte chart;
+	byte next;
+	byte bonus;
+};
+static tnb_hist_type h_info[] = { { "", 100, 1, 0, 50 } };
+#endif /* TOMETK */
 
 #if defined(ZANGBANDTK)
 
@@ -763,7 +782,7 @@ static void load_prev_data(void)
 {
 	int i;
 
-	struct birther temp;
+	struct tnb_birther temp;
 
 
 	/*** Save the current data ***/
@@ -1245,6 +1264,9 @@ static void validate_bg_aux(int chart, bool chart_checked[], char *buf)
 #endif
 #if defined(ZANGBANDTK)
 	int bg_max = sizeof(h_info) / sizeof(hist_type);
+#endif
+#if defined(TOMETK)
+	int bg_max = sizeof(h_info) / sizeof(h_info[0]);
 #endif
 
 	/* No chart */
@@ -2023,7 +2045,13 @@ static void player_wipe(void)
  * Each player starts out with a few items, given as tval/sval pairs.
  * In addition, he always has some food and a few torches.
  */
+#if defined(TOMETK)
+/* ToME: clases data-driven (MAX_CLASS=max_c_idx no es constante de compilación);
+ * el equipo inicial real lo asigna el propio engine de ToME. Dimensión stub. */
+static const byte player_init[1][3][2] =
+#else
 static const byte player_init[MAX_CLASS][3][2] =
+#endif
 {
 #if defined(ANGBANDTK) || defined(KANGBANDTK)
 
@@ -2844,7 +2872,9 @@ objcmd_birth_class(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj 
 	/* Set class */
 	p_ptr->pclass = class;
 	cp_ptr = &class_info[p_ptr->pclass];
+#if !defined(TOMETK)
 	mp_ptr = &magic_info[p_ptr->pclass];
+#endif /* !TOMETK */
 
 #if defined(ANGBANDTK) || defined(OANGBANDTK)
 	birth_ptr->stage = BIRTH_GENERATE;

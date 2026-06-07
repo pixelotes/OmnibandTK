@@ -217,9 +217,17 @@ static int SettingProc_hitpoint_warn(SettingParam *param)
 #if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 #define cheat_variable(i) op_ptr->opt[OPT_CHEAT+i]
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(ZANGBANDTK) || defined(TOMETK)
+#if defined(ZANGBANDTK)
 #define cheat_variable(i) (*cheat_info[i].o_var)
-#endif /* ZANGBANDTK, TOMETK */
+#endif /* ZANGBANDTK */
+#if defined(TOMETK)
+/* ToME no tiene cheat_info[]; las opciones de trampa son bools sueltos. */
+static bool *tome_cheat_vars[] = {
+	&cheat_peek, &cheat_hear, &cheat_room,
+	&cheat_xtra, &cheat_know, &cheat_live
+};
+#define cheat_variable(i) (*tome_cheat_vars[i])
+#endif /* TOMETK */
 
 /* Setting callback for cheating options */
 static int SettingProc_cheat(SettingParam *param)
@@ -263,9 +271,9 @@ static int SettingProc_cheat(SettingParam *param)
 #if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 #define option_variable(i) op_ptr->opt[i]
 #endif /* ANGBANDTK, KANGBANDTK, OANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 #define option_variable(i) (*option_info[i].o_var)
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 
 /* Setting callback for regular boolean options */
 int SettingProc_opt(SettingParam *param)

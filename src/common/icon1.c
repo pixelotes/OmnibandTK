@@ -111,9 +111,9 @@ void angtk_view_floor(int y, int x, int info, int torch)
 #if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 		else if (info & (CAVE_SEEN))
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 		else if (info & (CAVE_VIEW))
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 		{
 			/* Only lit by "torch" lite */
 			if (view_yellow_lite && torch)
@@ -167,9 +167,9 @@ void angtk_view_wall(int y, int x, int info, int torch)
 #if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 		else if (info & (CAVE_SEEN))
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 		else if (info & (CAVE_VIEW))
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 		{
 			if (view_yellow_lite && torch)
 			{
@@ -303,11 +303,11 @@ void get_grid_info(int y, int x, t_grid *gridPtr)
 	/* Feature */
 	feat = cave_feat(y, x);
 
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 	/* Apply "mimic" field */
 	if (cave[y][x].mimic)
 		feat = cave[y][x].mimic;
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 
 	/* Apply mimic field */
 	feat = f_info[feat].mimic;
@@ -315,10 +315,10 @@ void get_grid_info(int y, int x, t_grid *gridPtr)
 	/* Monster/Player */
 	m_idx = cave_m_idx(y, x);
 
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 	if ((y == p_ptr_py) && (x == p_ptr_px))
 		m_idx = -1;
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 
 	/* Handle "player" */
 	if (m_idx < 0)
@@ -344,12 +344,12 @@ void get_grid_info(int y, int x, t_grid *gridPtr)
 #if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
 		    (info & (CAVE_SEEN)))
 #endif /* ANGBANDTK, KANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 		    (((info & (CAVE_LITE)) ||
 		      ((info & (CAVE_GLOW)) &&
 		       (info & (CAVE_VIEW)))) &&
 		     !p_ptr->blind))
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 		{
 			/* Remember the feature index */
 			gridPtr->f_idx = feat;

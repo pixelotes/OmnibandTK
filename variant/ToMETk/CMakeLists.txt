@@ -19,7 +19,7 @@ SET (common_SRCS
 #    (q_*.c y load_gif.c en plots.c; maid-x11.c en main-x11.c). Compilarlos
 #    sueltos da una cascada de errores falsa.
 FILE (GLOB tome_engine_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
-LIST (FILTER tome_engine_SRCS EXCLUDE REGEX "/(main|main-.*|maim-.*|maid-.*|load_gif|q_[a-z]+)\\.c$")
+LIST (FILTER tome_engine_SRCS EXCLUDE REGEX "/(main|main-.*|maim-.*|maid-.*|load_gif|readdib|q_[a-z]+)\\.c$")
 
 # Intérprete Lua embebido + runtime tolua (excluye la herramienta tolua.c/tolualua.c).
 FILE (GLOB tome_lua_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/lua/*.c)
@@ -31,7 +31,7 @@ SET_PROPERTY (
      ${PLATFORM}
      TOMETK
      TNB_BACKUP
-     TNB_SQUELCH
+     # TNB_SQUELCH: ToME no tiene object_kind.squelch -> deshabilitado.
      ${SDL_CFLAGS}
      ${TREECTRL_CFLAGS}
 )

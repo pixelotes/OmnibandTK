@@ -588,7 +588,11 @@ static void ExpandPy(QE_ExpandArgs *args)
 			switch (args->which)
 			{
 				case 'c': /* title */
+#if defined(TOMETK)
+					ExtToUtf_ExpandString((char *) (c_name + cp_ptr->titles[(p_ptr->lev-1)/5]), args->result);
+#else
 					ExtToUtf_ExpandString((char *) player_title[p_ptr->pclass][(p_ptr->lev-1)/5], args->result);
+#endif
 					return;
 			}
 			chars = "c";

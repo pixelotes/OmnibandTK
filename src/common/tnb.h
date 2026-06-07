@@ -244,6 +244,8 @@
 #define FEAT_SHOP_HEAD FEAT_SHOP      /* ToME: una sola feature de tienda */
 #define FEAT_SHOP_TAIL FEAT_SHOP
 #define FEAT_INVIS FEAT_NONE
+/* ToME divide la antigua CAVE_LITE en player/monster lit (ver cave.c:4187). */
+#define CAVE_LITE (CAVE_PLIT | CAVE_MLIT)
 #define TR3_LITE TR3_LITE1
 #define NAME_TEXT_TYPE FLD_STRING
 #define VERSION_NAME "ToME"

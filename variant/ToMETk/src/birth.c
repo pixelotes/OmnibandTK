@@ -3355,6 +3355,7 @@ void init_town(int t_idx, int level)
  * Note that we may be called with "junk" leftover in the various
  * fields, so we must be sure to clear them first.
  */
+#if 0 /* TNB: la cola Tk (birth-tnb.c) provee player_birth */
 void player_birth(void)
 {
 	int i, j, rtown = TOWN_RANDOM;
@@ -3524,6 +3525,7 @@ void player_birth(void)
 	/* Select bounty monsters. */
 	select_bounties();
 }
+#endif /* 0 -- TNB player_birth */
 
 
 

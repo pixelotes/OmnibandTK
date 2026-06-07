@@ -1525,6 +1525,7 @@ static void Term_fresh_row_text(int y, int x1, int x2)
  * Currently, the use of "Term->icky_corner" and "Term->soft_cursor"
  * together may result in undefined behavior.
  */
+#if 0 /* TNB: la cola Tk (main-tnb.c) provee Term_fresh */
 errr Term_fresh(void)
 {
 	int x, y;
@@ -1866,6 +1867,7 @@ errr Term_fresh(void)
 	/* Success */
 	return (0);
 }
+#endif /* 0 -- TNB Term_fresh */
 
 
 

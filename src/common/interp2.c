@@ -993,7 +993,7 @@ objcmd_equipment(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *C
 				}
 				if (request_activate)
 				{
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 					bool activate = object_known_p(o_ptr) &&
 						((f3 & TR3_ACTIVATE) != 0);
 #endif /* */
@@ -2677,7 +2677,12 @@ objcmd_highscore(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *C
 			}
 			if (highscore_predict || (objC == 4))
 			{
+#if defined(TOMETK)
+				/* TODO ToME: predict_score(void); the_score queda sin rellenar */
+				(void) predict_score();
+#else
 				predict_score(&the_score);
+#endif
 				(void) HighScoreToArray(t, &the_score);
 			}
 			BooleanResult(interp, highscore_predict);
@@ -3294,7 +3299,11 @@ objcmd_inventory(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *C
 			break;
 
 		case IDX_TOTAL_WEIGHT: /* total_weight */
+#if defined(TOMETK)
+			IntResult(interp, calc_total_weight());
+#else
 			IntResult(interp, p_ptr->total_weight);
+#endif
 			break;
 
 		case IDX_WEIGHT_LIMIT: /* weight_limit */
