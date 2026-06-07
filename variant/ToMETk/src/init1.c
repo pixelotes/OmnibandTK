@@ -43,7 +43,7 @@
 /*
  * Monster Blow Methods
  */
-static cptr r_info_blow_method[] =
+/* static -- TNB */ cptr r_info_blow_method[] =
 {
 	"*",
 	"HIT",
@@ -121,7 +121,7 @@ static cptr r_info_blow_effect[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags1[] =
+/* static -- TNB */ cptr r_info_flags1[] =
 {
 	"UNIQUE",
 	"QUESTOR",
@@ -160,7 +160,7 @@ static cptr r_info_flags1[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags2[] =
+/* static -- TNB */ cptr r_info_flags2[] =
 {
 	"STUPID",
 	"SMART",
@@ -199,7 +199,7 @@ static cptr r_info_flags2[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags3[] =
+/* static -- TNB */ cptr r_info_flags3[] =
 {
 	"ORC",
 	"TROLL",
@@ -238,7 +238,7 @@ static cptr r_info_flags3[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags4[] =
+/* static -- TNB */ cptr r_info_flags4[] =
 {
 	"SHRIEK",
 	"MULTIPLY",
@@ -277,7 +277,7 @@ static cptr r_info_flags4[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags5[] =
+/* static -- TNB */ cptr r_info_flags5[] =
 {
 	"BA_ACID",
 	"BA_ELEC",
@@ -316,7 +316,7 @@ static cptr r_info_flags5[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags6[] =
+/* static -- TNB */ cptr r_info_flags6[] =
 {
 	"HASTE",
 	"HAND_DOOM",
@@ -356,7 +356,7 @@ static cptr r_info_flags6[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags7[] =
+/* static -- TNB */ cptr r_info_flags7[] =
 {
 	"AQUATIC",
 	"CAN_SWIM",
@@ -395,7 +395,7 @@ static cptr r_info_flags7[] =
 /*
  * Monster race flags
  */
-static cptr r_info_flags8[] =
+/* static -- TNB */ cptr r_info_flags8[] =
 {
 	"WILD_ONLY",
 	"WILD_TOWN",
@@ -435,7 +435,7 @@ static cptr r_info_flags8[] =
 /*
  * Monster race flags - Drops
  */
-static cptr r_info_flags9[] =
+/* static -- TNB */ cptr r_info_flags9[] =
 {
 	"DROP_CORPSE",
 	"DROP_SKELETON",
@@ -470,6 +470,16 @@ static cptr r_info_flags9[] =
 	"XXX9X30",
 	"XXX9X31",
 };
+
+#if 1 /* TNB: expone las tablas de nombres de flags a la cola (tnb usa 1..6) */
+char **r_info_flags[10] = {
+	NULL,
+	(char **) r_info_flags1, (char **) r_info_flags2, (char **) r_info_flags3,
+	(char **) r_info_flags4, (char **) r_info_flags5, (char **) r_info_flags6,
+	NULL, NULL, NULL
+};
+int r_info_flags_max = 6;
+#endif /* TNB */
 
 
 /*

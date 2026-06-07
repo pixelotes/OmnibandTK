@@ -10,6 +10,7 @@ SET (common_SRCS
     ${d}describe.c ${d}file_character.c ${d}icon1.c ${d}icon2.c ${d}interp1.c
     ${d}interp2.c ${d}map.c ${d}mon_memory.c ${d}plat.c ${d}r_info.c ${d}savefile-z.c ${d}setting.c ${d}sound.c ${d}struct.c
     ${d}town.c ${d}util-tnb.c ${d}widget.c ${d}widget-iso.c ${d}wor-z.c ${d}treectrl.c
+    ${d}tome-tnb-stubs.c
 )
 
 # Motor de ToME: todos los .c de src/ EXCEPTO:
