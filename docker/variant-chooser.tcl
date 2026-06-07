@@ -1,28 +1,28 @@
-# OmnibandTk — selector de módulo/variante (pantalla previa al juego).
+# OmnibandTk - module/variant chooser (shown before the game starts).
 #
-# Se ejecuta con wish (el Tcl/Tk 8.6 ya compilado en la imagen, sin instalar
-# frameworks nuevos) DENTRO del display VNC. Recibe como argv la lista de
-# variantes disponibles (las que tienen angband.so compilado). Muestra un botón
-# por variante; al pulsar, imprime el nombre elegido por stdout y sale. Si se
-# cierra la ventana sin elegir, sale con código 1 y sin imprimir nada.
+# Runs under wish (the Tcl/Tk 8.6 already built into the image, no new frameworks
+# installed) INSIDE the VNC display. Receives as argv the list of available
+# variants (those with a compiled angband.so). Shows one button per variant; on
+# click it prints the chosen name to stdout and exits. Closing the window without
+# choosing exits with code 1 and prints nothing.
 
 package require Tk
 
-# Nombre legible + descripción corta por variante (clave = dir de la variante).
+# Readable name + short description per variant (key = variant dir).
 array set INFO {
-    AngbandTk   {"Angband"   "El roguelike clásico de Tolkien (base 2.9.2)"}
-    KAngbandTk  {"Kangband"  "Variante con más razas, clases y monstruos"}
-    OAngbandTk  {"Oangband"  "Rediseño de clases y sistema de combate"}
-    ZAngbandTk  {"ZAngband"  "Mundo de Zelazny: pueblos, misiones y magia"}
+    AngbandTk   {"Angband"   "Tolkien's classic roguelike (2.9.2 base)"}
+    KAngbandTk  {"Kangband"  "Variant with more races, classes and monsters"}
+    OAngbandTk  {"Oangband"  "Redesigned classes and combat system"}
+    ZAngbandTk  {"ZAngband"  "Zelazny's world: towns, quests and magic"}
 }
 
 proc pick {v} { puts $v; flush stdout; exit 0 }
 
-wm title . "OmnibandTk — Elige módulo"
+wm title . "OmnibandTk - Choose module"
 . configure -bg "#1e1e2e"
 
 label .t -text "OmnibandTk" -font {Helvetica 28 bold} -fg "#cdd6f4" -bg "#1e1e2e"
-label .s -text "Elige el módulo que quieres jugar" -font {Helvetica 13} \
+label .s -text "Choose the module you want to play" -font {Helvetica 13} \
     -fg "#a6adc8" -bg "#1e1e2e"
 pack .t -pady {24 2} -padx 40
 pack .s -pady {0 18} -padx 40
@@ -48,7 +48,7 @@ foreach v $argv {
     incr i
 }
 
-label .q -text "(cierra esta ventana para cancelar)" -font {Helvetica 9} \
+label .q -text "(close this window to cancel)" -font {Helvetica 9} \
     -fg "#6c7086" -bg "#1e1e2e"
 pack .q -pady {18 20}
 
