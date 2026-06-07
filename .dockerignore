@@ -1,0 +1,15 @@
+# Contexto de build para docker/Dockerfile (stages build/runtime).
+# Se necesita: src/ variant/ tk/ lib/ CMakeLists.txt docker/.
+# Se excluye lo pesado/no-fuente para que el contexto no sean cientos de MB.
+.git
+build-docker/
+build/
+build-tome/
+OmnibandTk-1.5/
+newvariants/
+*.log
+*.o
+*.a
+variant/ToMETk/src/tome
+variant/ToMETk/src/tolua
+docs/

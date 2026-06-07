@@ -5,7 +5,7 @@ IF (PLATFORM_SDL)
 	SET (SDL_CFLAGS PLATFORM_SDL REDEFINE_X_FUNCS)
 ENDIF (PLATFORM_SDL)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 GET_FILENAME_COMPONENT (ROOT
     ${CMAKE_SOURCE_DIR}
@@ -206,10 +206,11 @@ FIND_PATH (TREECTRL_HDRS
 	NO_DEFAULT_PATH
 )
 
-FIND_PATH (ZLIB_HDRS 
+# zlib del sistema (Debian: zlib1g-dev -> /usr/include/zlib.h). Antes apuntaba
+# al árbol vendado ${ROOT}/zlib-122 con NO_DEFAULT_PATH; ese directorio ya no
+# existe tras pasar a zlib del sistema, así que buscamos en las rutas por defecto.
+FIND_PATH (ZLIB_HDRS
 	NAMES zlib.h
-	PATHS ${ROOT}/zlib-122
-	NO_DEFAULT_PATH
 )
 
 SET (COMMONTK ${CMAKE_CURRENT_SOURCE_DIR})

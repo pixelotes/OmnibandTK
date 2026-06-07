@@ -1,0 +1,27 @@
+# OmnibandTk — autocontenido. Tras clonar el repo:
+#
+#   docker compose up
+#
+# La primera vez compila el juego y hornea la imagen (tarda unos minutos); luego
+# arranca y sirve por VNC. Conéctate desde el host a:
+#   - Navegador:   http://localhost:6080/vnc.html?host=localhost&port=6080
+#   - VNC nativo:  vnc://localhost:5900
+#   Contraseña: omniband
+#
+# Para parar: Ctrl+C (o `docker compose down`).
+services:
+  omniband:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: runtime
+    image: omnibandtk:app
+    # Puertos solo accesibles desde la propia máquina (no la red local).
+    ports:
+      - "127.0.0.1:6080:6080"
+      - "127.0.0.1:5900:5900"
+    stdin_open: true
+    tty: true
+    # Por defecto se muestra el selector de variante al conectar. Para arrancar
+    # directo una variante, descomenta (p.ej.):
+    # command: ["ZAngbandTk"]

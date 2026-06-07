@@ -27,7 +27,7 @@ else
 fi
 
 echo "=== Construyendo/actualizando imagen (${IMAGE}) ==="
-docker build -t "${IMAGE}" -f "${REPO_ROOT}/docker/Dockerfile" "${REPO_ROOT}/docker"
+docker build --target deps -t "${IMAGE}" -f "${REPO_ROOT}/docker/Dockerfile" "${REPO_ROOT}/docker"
 
 echo "=== Arrancando ${VARIANT:-(selector de módulo)} con VNC en 127.0.0.1:5900 + noVNC en 127.0.0.1:6080 ==="
 echo "    Navegador (recomendado):  http://localhost:6080/vnc.html (pass: omniband)"

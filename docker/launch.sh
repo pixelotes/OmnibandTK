@@ -14,7 +14,7 @@ if [ ! -f "${REPO_ROOT}/build-docker/variant/${VARIANT}/angband.so" ]; then
 fi
 
 echo "=== Construyendo/actualizando imagen (${IMAGE}) ==="
-docker build -t "${IMAGE}" -f "${REPO_ROOT}/docker/Dockerfile" "${REPO_ROOT}/docker"
+docker build --target deps -t "${IMAGE}" -f "${REPO_ROOT}/docker/Dockerfile" "${REPO_ROOT}/docker"
 
 echo "=== Lanzando juego headless (variante ${VARIANT}) ==="
 docker run --rm \

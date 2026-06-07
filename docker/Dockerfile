@@ -1,8 +1,19 @@
-# OmnibandTk — imagen de dependencias para la prueba de concepto (Fase 1).
+# OmnibandTk — Dockerfile multi-stage.
 #
-# Esta imagen NO compila el juego: hornea la parte lenta y estable (toolchain +
-# Tcl/Tk 8.6.16 compilado desde fuente + treectrl 2.4.1). El juego se compila
-# aparte montando el repo (ver docker/build.sh), para poder iterar rápido.
+#   deps     : toolchain + Tcl/Tk 8.6.16 (desde fuente) + treectrl + Tkhtml +
+#              stack VNC. Es el entorno estable; el flujo de desarrollo
+#              (docker/build.sh, launch.sh, play.sh) lo construye con
+#              `--target deps` y compila/monta el juego montando el repo.
+#   build    : compila el motor de las 4 variantes y hornea el layout de runtime
+#              en /opt/omniband (necesita el repo como contexto de build).
+#   runtime  : imagen final AUTOCONTENIDA. Arranca y sirve el juego por VNC sin
+#              montar el repo. Es lo que construye `docker compose up`.
+#
+# Construir la imagen jugable:  docker build -f docker/Dockerfile --target runtime -t omnibandtk:app .
+# Solo el entorno de deps:      docker build -f docker/Dockerfile --target deps -t omnibandtk-deps:bookworm docker
+#
+# Esta etapa (deps) NO compila el juego: hornea la parte lenta y estable
+# (toolchain + Tcl/Tk 8.6.16 compilado desde fuente + treectrl 2.4.1).
 #
 # Modernizacion (2026-06): subido de Tcl/Tk 8.5.7 -> 8.6.16 y treectrl 2.2.9 ->
 # 2.4.1. Se mantiene la compilacion desde fuente porque CMake necesita los headers
@@ -14,7 +25,7 @@
 # (implicit-int, implicit function decl) como warnings, no errores.
 # Imagen base fijada por digest (no solo por tag): el tag "12-slim" flota con cada
 # point release de Debian; el digest la ancla a un contenido exacto y reproducible.
-FROM debian:12-slim@sha256:0104b334637a5f19aa9c983a91b54c89887c0984081f2068983107a6f6c21eeb
+FROM debian:12-slim@sha256:0104b334637a5f19aa9c983a91b54c89887c0984081f2068983107a6f6c21eeb AS deps
 
 # Componentes vendados, fijados por versión + commit. Los SHA256 de los tarballs se
 # verifican tras descargar (ver más abajo): un pin de versión sin checksum no protege
@@ -129,3 +140,73 @@ ENV OMNI_TK_SRC=${SRCDIR}/tk${TCL_VER}
 ENV OMNI_TREECTRL_HDRS=${SRCDIR}/tktreectrl-${TREECTRL_VER}/generic
 
 WORKDIR /work
+
+
+# ============================================================================
+# Stage 2 (build): compila el motor de las 4 variantes y hornea el layout de
+# runtime en /opt/omniband. Necesita el repo como contexto (COPY . /src), por
+# eso la imagen jugable se construye con el contexto en la raíz del repo.
+# ============================================================================
+FROM deps AS build
+
+COPY . /src
+WORKDIR /src
+
+# Librerías comunes + las 4 variantes (sin BASS; backend NoSoundCard). -DL64 y
+# los flags C son los mismos que usa docker/in-container-build.sh.
+RUN cmake -S /src -B /build \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_C_FLAGS="-std=gnu89 -fcommon -w -DL64" \
+        -DTCL_INSTALL_DIR="${OMNI_TCL_PREFIX}" \
+        -DTCL_SOURCE_DIR="${OMNI_TCL_SRC}" \
+        -DTK_SOURCE_DIR="${OMNI_TK_SRC}" \
+        -DTREECTRL_HDRS="${OMNI_TREECTRL_HDRS}" \
+        -DZLIB_HDRS=/usr/include \
+ && cmake --build /build --target \
+        misc libdbwin dbwin common sound-nocard boot \
+        angband_library kangband_library oangband_library zangband_library borg \
+        -- -j"$(nproc)" -k
+
+# Hornear el layout de runtime en /opt/omniband (equivalente al staging de
+# docker/run-vnc.sh, pero desde /src y /build en vez del repo montado).
+RUN set -eux; \
+    PREFIX="${OMNI_TCL_PREFIX}"; STAGE=/opt/omniband; \
+    mkdir -p "${STAGE}/lib/dbwin" "${STAGE}/variant"; \
+    cp -a /src/tk "${STAGE}/tk"; \
+    cp -a /src/lib/. "${STAGE}/lib/"; \
+    for vso in /build/variant/*/angband.so; do \
+        v="$(basename "$(dirname "${vso}")")"; \
+        cp -a "/src/variant/${v}" "${STAGE}/variant/${v}"; \
+        cp "${vso}" "${STAGE}/variant/${v}/angband.so"; \
+        for borgso in /build/variant/"${v}"/borg/*/borg.so; do \
+            [ -f "${borgso}" ] || continue; \
+            cp "${borgso}" "${STAGE}/variant/${v}/borg/$(basename "$(dirname "${borgso}")")/borg.so"; \
+        done; \
+    done; \
+    cp /build/src/boot/angband                      "${STAGE}/angband"; \
+    cp /build/src/common-dll/common.so              "${STAGE}/lib/common.so"; \
+    cp /build/src/sound/NoSoundCard/sound-nocard.so "${STAGE}/lib/sound-nocard.so"; \
+    cp /build/src/dbwin/dbwin.so                    "${STAGE}/lib/dbwin/dbwin.so"; \
+    cp "$(find /usr/lib -name 'libz.so.1' | head -1)" "${STAGE}/lib/libz.so"; \
+    rm -rf "${STAGE}"/lib/treectrl2.*; \
+    cp -a "${PREFIX}"/lib/treectrl2.* "${STAGE}/lib/"; \
+    cp "${PREFIX}/lib/Tkhtml3.0/libTkhtml3.0.so" "${STAGE}/lib/TkHtml3.0/"; \
+    sed -i 's/Tkhtml30\.dll/libTkhtml3.0.so/' "${STAGE}/lib/TkHtml3.0/pkgIndex.tcl"; \
+    cp /src/docker/variant-chooser.tcl "${STAGE}/variant-chooser.tcl"
+
+
+# ============================================================================
+# Stage 3 (runtime): imagen final autocontenida. Solo el layout horneado (todas
+# las dependencias y los .prf incluidos) + Tcl/Tk + stack VNC heredados de deps.
+# NO incluye el código fuente ni el árbol de compilación. Juega sin el repo.
+# ============================================================================
+FROM deps AS runtime
+
+COPY --from=build /opt/omniband /opt/omniband
+COPY docker/play-entrypoint.sh /usr/local/bin/play-omniband
+RUN chmod +x /usr/local/bin/play-omniband
+
+ENV OMNI_STAGE=/opt/omniband
+EXPOSE 5900 6080
+WORKDIR /opt/omniband
+ENTRYPOINT ["/usr/local/bin/play-omniband"]

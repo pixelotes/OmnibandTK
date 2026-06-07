@@ -7,7 +7,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 IMAGE=omnibandtk-deps:bookworm
 
 echo "=== Construyendo imagen de dependencias (${IMAGE}) — la primera vez tarda ==="
-docker build -t "${IMAGE}" -f "${REPO_ROOT}/docker/Dockerfile" "${REPO_ROOT}/docker"
+docker build --target deps -t "${IMAGE}" -f "${REPO_ROOT}/docker/Dockerfile" "${REPO_ROOT}/docker"
 
 echo "=== Compilando la PoC dentro del contenedor ==="
 docker run --rm \
