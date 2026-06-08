@@ -894,8 +894,8 @@ qeinstall <Setting-mouse_repeat_town> ExpandSetting
 qeinstall <Setting-autobar_button_size> ExpandSetting
 qeinstall <Setting-show_cave_balloon> ExpandSetting
 
-# Hack -- ZAngband uses plain_descriptions
-if {[variant ZANGBANDTK]} {
+# Hack -- ZAngband/ToME use plain_descriptions (no native show_flavors)
+if {[variant ZANGBANDTK TOMETK]} {
 	qebind ZAngband <Setting-plain_descriptions> "qegenerate <Setting-show_flavors>"
 	qeinstall <Setting-show_flavors> ExpandSetting
 }
@@ -916,7 +916,7 @@ proc Setting {keyword args} {
 	# Set
 	if {[llength $args]} {
 		set value [lindex $args 0]
-		if {[variant ZANGBANDTK]} {
+		if {[variant ZANGBANDTK TOMETK]} {
 			# Hack -- Map show_flavors to plain_descriptions (reverse logic)
 			switch -- $keyword {
 				show_flavors {
@@ -958,7 +958,7 @@ proc Setting {keyword args} {
 
 	# Get
 	} else {
-		if {[variant ZANGBANDTK]} {
+		if {[variant ZANGBANDTK TOMETK]} {
 			# Hack -- Map show_flavors to plain_descriptions (reverse logic)
 			switch -- $keyword {
 				show_flavors {
@@ -1002,7 +1002,7 @@ proc Setting {keyword args} {
 
 proc SettingDesc {keyword} {
 
-	if {[variant ZANGBANDTK]} {
+	if {[variant ZANGBANDTK TOMETK]} {
 		# Hack -- Map show_flavors to plain_descriptions
 		switch -- $keyword {
 			show_flavors {

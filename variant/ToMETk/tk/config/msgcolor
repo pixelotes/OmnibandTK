@@ -273,22 +273,7 @@ One INSULT TERM_WHITE
 One MOAN TERM_WHITE
 One SHOW TERM_WHITE
 
-Group martial_art
-One punch TERM_WHITE
-One kick TERM_WHITE
-One strike TERM_WHITE
-One knee TERM_WHITE
-One elbow TERM_WHITE
-One butt TERM_WHITE
-One kick2 TERM_WHITE
-One uppercut TERM_WHITE
-One double_kick TERM_WHITE
-One cats_claw TERM_WHITE
-One jump_kick TERM_WHITE
-One eagles_claw TERM_WHITE
-One circle_kick TERM_WHITE
-One iron_fist TERM_WHITE
-One flying_kick TERM_WHITE
-One dragon_fist TERM_WHITE
-One crushing_blow TERM_WHITE
+# TNB: ToME no tiene el grupo de sonido/mensaje "martial_art" (es de
+# O/ZAngband). El engine de ToME no lo registra, asi que "angband sound
+# color martial_art ..." aborta. Bloque eliminado.
 

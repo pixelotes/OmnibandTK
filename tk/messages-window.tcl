@@ -414,7 +414,7 @@ proc NSMessagesWindow::TrackMessageAux {oop} {
 	if {[variant ANGBANDTK KANGBANDTK OANGBANDTK]} {
 		set combine [Value messages,combine]
 	}
-	if {[variant ZANGBANDTK]} {
+	if {[variant ZANGBANDTK TOMETK]} {
 		set combine 0
 	}
 
