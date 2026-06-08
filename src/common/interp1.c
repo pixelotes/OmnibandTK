@@ -1747,7 +1747,12 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 		}
 
 		case IDX_CLASS: /* class */
+#if defined(TOMETK)
+			/* ToME: cp_ptr->title es offset s32b en c_name, no char*. */
+			StaticResult(interp, (char *) (c_name + cp_ptr->title));
+#else
 			StaticResult(interp, (char *) cp_ptr->title);
+#endif
 			break;
 
 		case IDX_DEPTH: /* depth */
@@ -1906,6 +1911,10 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 #if defined(ZANGBANDTK)
 			StaticResult(interp, (char *) rp_ptr->title);
 #endif
+#if defined(TOMETK)
+			/* ToME: rp_ptr->title es offset s32b en rp_name, no char*. */
+			StaticResult(interp, (char *) (rp_name + rp_ptr->title));
+#endif
 			break;
 
 		case IDX_SEX: /* sex */
@@ -1994,13 +2003,14 @@ objcmd_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONS
 			{
 				return TCL_ERROR;
 			}
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(OANGBANDTK) || defined(TOMETK)
+			/* ToME tiene p_ptr->stat_add[] como Angband (bonus de equipo). */
 			if (SetArrayValueLong(t, "equip", p_ptr->stat_add[index])
 				!= TCL_OK)
 			{
 				return TCL_ERROR;
 			}
-#endif /* ANGBANDTK, KANGBANDTK, OANGBANDTK */
+#endif /* ANGBANDTK, KANGBANDTK, OANGBANDTK, TOMETK */
 #if defined(ZANGBANDTK)
 
 			/* stat_add[] is not for equipment only in ZAngband */

@@ -768,7 +768,7 @@ proc NSCharInfoCanvas::PositionItems {oop} {
 	if {[variant OANGBANDTK]} {
 		set row 18
 	}
-	if {[variant ZANGBANDTK]} {
+	if {[variant ZANGBANDTK TOMETK]} {
 		set row 19
 	}
 	set y [expr {($topRow + $row) * [Info $oop font,height]}]
