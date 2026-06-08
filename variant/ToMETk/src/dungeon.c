@@ -5856,6 +5856,12 @@ void play_game(bool new_game)
 	/* Hack -- Character is no longer "icky" */
 	character_icky = FALSE;
 
+#if defined(TOMETK)
+	/* TNB: monta la UI del juego (iconos, widgets, treectrl, init-other.tcl ->
+	 * ventana del mapa). Sin esto el juego corre pero el splash de carga nunca
+	 * se sustituye por el mapa. Las otras variantes Tk ya tienen este parche. */
+	angtk_character_generated();
+#endif /* TOMETK */
 
 	/* Start game */
 	alive = TRUE;

@@ -665,6 +665,25 @@ void flavor_init(void)
 		/* Check for "easily known" */
 		k_ptr->easy_know = object_easy_know(i);
 	}
+
+#if defined(TOMETK)
+	/* TNB: pasar a la cola Tk los flavors por tipo (count + colores) para que
+	 * g_flavor se pueble. Orden esperado por angtk_flavor_init: amulet,
+	 * mushroom, potion, ring, rod, staff, wand. */
+	{
+		extern void angtk_flavor_init(int *max, byte **attr);
+		int fmax[7];
+		byte *fattr[7];
+		fmax[0] = MAX_AMULETS; fattr[0] = amulet_col;
+		fmax[1] = MAX_SHROOM;  fattr[1] = food_col;
+		fmax[2] = MAX_COLORS;  fattr[2] = potion_col;
+		fmax[3] = MAX_ROCKS;   fattr[3] = ring_col;
+		fmax[4] = MAX_METALS;  fattr[4] = rod_col;
+		fmax[5] = MAX_WOODS;   fattr[5] = staff_col;
+		fmax[6] = MAX_METALS;  fattr[6] = wand_col;
+		angtk_flavor_init(fmax, fattr);
+	}
+#endif /* TOMETK */
 }
 
 /*
