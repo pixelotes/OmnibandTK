@@ -552,6 +552,15 @@ proc ConfigMap::Init {} {
 					+ {
 						symbol assign feature $f_idx sym.door
 					}
+					default {
+						# TNB: ToME tiene features extra (fountain, altares,
+						# etc.) que el switch por nombre no cubre. En el mapa
+						# (baja resolución) los tratamos como suelo en vez de
+						# dejarlos en sym.blank (NSMap::InitModule lo rechaza).
+						if {[variant TOMETK]} {
+							symbol assign feature $f_idx sym.floor0
+						}
+					}
 				}
 			}
 		}

@@ -19,11 +19,16 @@
 /* --- Opción de la cola (en ZAngband es un bool global). --- */
 bool easy_floor = TRUE;
 
-/* --- Tabla de nombres de color de term (16 colores base + NULL). --- */
+/* --- Tabla de nombres de color de term (16 colores base + NULL).
+ * Deben coincidir con los nombres "TERM_XXX" que registra el Value manager
+ * (value-manager.tcl, "Manage TERM_DARK ...") porque la message-window lee
+ * "Value $attr" usando estos nombres ("angband info term_attr"). El resto de
+ * variantes (p.ej. ZAngband flavor.c) usan STRINGIFY2(TERM_DARK) -> "TERM_DARK". */
 cptr keyword_term_color[] = {
-	"dark", "white", "slate", "orange", "red", "green", "blue", "umber",
-	"light dark", "light slate", "violet", "yellow", "light red",
-	"light green", "light blue", "light umber", NULL
+	"TERM_DARK", "TERM_WHITE", "TERM_SLATE", "TERM_ORANGE",
+	"TERM_RED", "TERM_GREEN", "TERM_BLUE", "TERM_UMBER",
+	"TERM_L_DARK", "TERM_L_WHITE", "TERM_VIOLET", "TERM_YELLOW",
+	"TERM_L_RED", "TERM_L_GREEN", "TERM_L_BLUE", "TERM_L_UMBER", NULL
 };
 
 /* --- Funciones de engine ausentes en ToME (valores neutros / no-op). --- */
