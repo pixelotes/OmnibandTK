@@ -418,6 +418,13 @@ proc NSMessagesWindow::TrackMessageAux {oop} {
 		set combine 0
 	}
 
+	# TNB: inicializar las listas para el caso sin mensajes ($max == 0), donde
+	# el bucle no-combine no se ejecuta y $textList quedaria indefinido.
+	set textList {}
+	set colorList {}
+	set soundList {}
+	set age {}
+
 	# Option: Combine identical messages (ex "You hit it. (x3)")
 	if {$combine} {
 
