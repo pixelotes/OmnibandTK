@@ -2721,6 +2721,13 @@ static void birth_init(void)
 		/* Wipe the player */
 		player_wipe();
 
+#if defined(TOMETK)
+		/* ToME: usar creación por puntos (el wizard de la cola muestra la
+		 * pantalla de Points). Sin esto, birth points stat falla con
+		 * "not using point-based generation". */
+		p_ptr_point_based = TRUE;
+#endif /* TOMETK */
+
 		/* Allocate structure to be freed later */
 		birth_ptr = (struct birth_info *) Tcl_Alloc(sizeof(struct birth_info));
 

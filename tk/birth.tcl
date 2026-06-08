@@ -1065,7 +1065,7 @@ proc NSBirth::SelectionChanged {oop tree count select deselect} {
 			if {[variant OANGBANDTK]} {
 				set flags {flags1 flags2 flags3 flags_special}
 			}
-			if {[variant ZANGBANDTK]} {
+			if {[variant ZANGBANDTK TOMETK]} {
 				set flags {}
 			}
 			append string <ul>
@@ -1087,11 +1087,15 @@ proc NSBirth::SelectionChanged {oop tree count select deselect} {
 			}
 			append string </ul>
 
-			append string <h3>[mc "Recommended Classes"]</h3>
-			foreach choice [struct set player_race $r choice] {
-				set class [lindex [angband info class_name] $choice]
-				regsub -all " " $class * d_class
-				append string [mc $d_class]<br>
+			if {![variant TOMETK]} {
+				# ToME: player_race no tiene el campo "choice" (clases
+				# recomendadas); cualquier raza puede cualquier clase.
+				append string <h3>[mc "Recommended Classes"]</h3>
+				foreach choice [struct set player_race $r choice] {
+					set class [lindex [angband info class_name] $choice]
+					regsub -all " " $class * d_class
+					append string [mc $d_class]<br>
+				}
 			}
 		}
 
@@ -1336,13 +1340,18 @@ proc NSBirth::InitScreen_Class {oop} {
 # Get class choices for player race
 set race [Info $oop race]
 set r [lsearch -exact [angband info race_name] $race]
-set choice [struct set player_race $r choice]
+if {[variant TOMETK]} {
+	# ToME: cualquier raza puede cualquier clase (sin campo "choice").
+	set choice {}
+} else {
+	set choice [struct set player_race $r choice]
+}
 
 	set classList [lsort -dictionary [angband info class_name]]
 	foreach class $classList {
 set fill ""
 set c [lsearch -exact [angband info class_name] $class]
-if {[lsearch -integer $choice $c] == -1} {
+if {![variant TOMETK] && [lsearch -integer $choice $c] == -1} {
 	set fill gray70
 }
 		InfoListAppend $oop [mc $class] $class $class $fill
@@ -2574,6 +2583,32 @@ proc NSBirth::Next {oop} {
 			RollOne {}
 		}
 	# ZANGBANDTK
+	}
+
+	if {[variant TOMETK]} {
+		switch [Info $oop screen] {
+
+			Gender {set nextScreen Race}
+			Race {set nextScreen Class}
+			Class {
+				# Note: pointbased > autoroll
+				if {[Info $oop pointbased]} {
+					set nextScreen Points
+				} elseif {[Info $oop autoroll]} {
+					set nextScreen AutoRoll
+				} else {
+					set nextScreen RollOne
+				}
+			}
+			AutoRoll {
+				if {[ValidateAutoStats $oop]} {
+					set nextScreen RollOne
+				}
+			}
+			Points {set nextScreen RollOne}
+			RollOne {}
+		}
+	# TOMETK
 	}
 
 	if {[string length $nextScreen]} {
