@@ -1593,6 +1593,7 @@ proc InitBatFile {} {
 		KANGBANDTK { set name kang }
 		OANGBANDTK { set name oang }
 		ZANGBANDTK { set name zang }
+		TOMETK { set name tome }
 	}
 	set variant [file tail [Path]]
 
