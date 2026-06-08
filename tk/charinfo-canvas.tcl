@@ -1156,6 +1156,11 @@ proc NSCharInfoCanvas::Configure {oop} {
 	if {![ContentVisible $canvas xview]} {
 		set doHorz 1
 	}
+	# TNB: en ToME el frame del char-info (p.ej. .player3) tiene hijos
+	# gestionados por pack, así que grid de los scrollbars choca. Es no-fatal
+	# (el resumen se muestra); envolvemos en catch para no abortar con diálogo.
+	# TODO: unificar el geometry manager del frame del char-info en ToME.
+	catch {
 	if {$doVert != [Info $oop scrollbar,vert]} {
 		if {$doVert} {
 			grid $frame.yscroll
@@ -1171,6 +1176,7 @@ proc NSCharInfoCanvas::Configure {oop} {
 			grid remove $frame.xscroll
 		}
 		Info $oop scrollbar,horz $doHorz
+	}
 	}
 
 	return
