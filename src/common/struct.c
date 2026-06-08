@@ -35,6 +35,25 @@ static Tcl_Obj *struct_get_object_kind_attr(Tcl_Interp *interp, t_field *info,
 	return Tcl_NewIntObj(kind_attr(k_idx));
 }
 
+#if defined(TOMETK)
+/*
+ * ToME: player_class.title y player_race.title son offsets s32b dentro de los
+ * buffers de nombres (c_name / rp_name), no char*. El reflection genérico los
+ * trataba como FLD_STRINGPTR (deref como puntero -> strlen sobre un offset ->
+ * segfault). Estos getters resuelven el offset al string real.
+ */
+static Tcl_Obj *struct_get_player_class_title(Tcl_Interp *interp, t_field *info,
+	player_class *c_ptr, int c_idx)
+{
+	return Tcl_NewStringObj((char *) (c_name + c_ptr->title), -1);
+}
+static Tcl_Obj *struct_get_player_race_title(Tcl_Interp *interp, t_field *info,
+	player_race *r_ptr, int r_idx)
+{
+	return Tcl_NewStringObj((char *) (rp_name + r_ptr->title), -1);
+}
+#endif /* TOMETK */
+
 #if defined(TNB_SQUELCH)
 const char *keyword_squelch[] = {
 	"none", "cursed", "average", "good", "excellent", "all", NULL
@@ -909,7 +928,11 @@ static Tcl_Obj *struct_get_player_RC_X_adj(Tcl_Interp *interp, t_field *info,
 
 static t_field struct_player_class[] =
 {
+#if defined(TOMETK)
+{ FIELD_DESC(title, player_class), FLD_STRINGPTR, EDIT_CALLBACK, 0, 0, struct_get_player_class_title},
+#else
 { FIELD_DESC(title, player_class), FLD_STRINGPTR, EDIT_NO},
+#endif
 { FIELD_DESC(c_adj, player_class), FLD_CALLBACK, EDIT_CALLBACK, 0, 0, struct_get_player_RC_X_adj},
 { FIELD_DESC(c_dis, player_class), FLD_INT16, EDIT_NO},
 { FIELD_DESC(c_dev, player_class), FLD_INT16, EDIT_NO},
@@ -983,7 +1006,11 @@ t_field struct_player_race[] = {
 { FIELD_DESC(text, player_race), FLD_INT32U, EDIT_NO},
 #endif
 #if defined(ZANGBANDTK)
+#if defined(TOMETK)
+{FIELD_DESC(title, player_race), FLD_STRINGPTR, EDIT_CALLBACK, 0, 0, struct_get_player_race_title},
+#else
 {FIELD_DESC(title, player_race), FLD_STRINGPTR, EDIT_NO},
+#endif
 #endif
 {FIELD_DESC(r_adj, player_race), FLD_CALLBACK, EDIT_CALLBACK, 0, 0, struct_get_player_RC_X_adj},
 {FIELD_DESC(r_dis, player_race), FLD_INT16, EDIT_NO},
