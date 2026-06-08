@@ -79,13 +79,17 @@ proc Boot::Boot {} {
 #		error "Skip using tile"
 #		package require tile
 		namespace eval ::ttk {
-			namespace export button checkbutton entry radiobutton notebook \
-				scrollbar
+			namespace export button checkbutton entry radiobutton notebook
 		}
 		namespace eval :: {
 			namespace import -force ttk::button ttk::checkbutton \
-				ttk::radiobutton ttk::notebook ttk::scrollbar
+				ttk::radiobutton ttk::notebook
 		}
+		# TNB: NO importar ttk::scrollbar como 'scrollbar'. Los ttk scrollbars
+		# no soportan -highlightthickness, y varias ventanas hacen
+		# "$sbar configure -highlightthickness 0" -> "unknown option" que
+		# abortaba el setup (p.ej. la ventana de carga/mapa se quedaba colgada).
+		# El scrollbar clásico de Tk es compatible (-orient/-command/set).
 		set ::UseTile 1
 	}
 
