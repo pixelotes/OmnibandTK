@@ -3035,6 +3035,17 @@ objcmd_birth_get_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl
 
 #endif /* ZANGBANDTK */
 
+#if defined(TOMETK)
+	/* ToME: el wizard de la cola no replica toda la init de player_birth.
+	 * HOOK_CALC_BONUS (en update_stuff->calc_bonuses) recorre p_ptr->corruptions
+	 * (bool*), que la birth de ToME alocaba/preservaba; asegurarlo aquí para
+	 * evitar un deref NULL. TODO: replicar la init completa de ToME. */
+	if (p_ptr->corruptions == NULL && max_corruptions > 0)
+	{
+		C_MAKE(p_ptr->corruptions, max_corruptions, bool);
+	}
+#endif /* TOMETK */
+
 	/* Calculate the bonuses and hitpoints */
 	p_ptr->update |= (PU_BONUS | PU_HP);
 
@@ -3541,6 +3552,15 @@ objcmd_birth_race(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *
 	/* Set race */
 	p_ptr->prace = race;
 	rp_ptr = &race_info[p_ptr->prace];
+
+#if defined(TOMETK)
+	/* ToME usa raza + subraza (race modifier). El wizard de la cola no ofrece
+	 * pantalla de subraza, así que fijamos la 0 por defecto para que rmp_ptr
+	 * sea válido (calc_bonuses la deref: rmp_ptr->infra). TODO: pantalla de
+	 * subraza/dios propia de ToME. */
+	p_ptr->pracem = 0;
+	rmp_ptr = &race_mod_info[p_ptr->pracem];
+#endif /* TOMETK */
 
 #if defined(ZANGBANDTK)
 
