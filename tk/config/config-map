@@ -128,7 +128,7 @@ proc ConfigMap::InitBits {size} {
 	set Bits(sym.upstair,$size) [Bits $size 250 186]
 	set Bits(sym.door,$size) [Bits $size 250 137]
 	set Bits(sym.trap,$size) [Bits $size 250 15]
-	if {[variant KANGBANDTK ZANGBANDTK]} {
+	if {[variant KANGBANDTK ZANGBANDTK TOMETK]} {
 		set Bits(sym.pet,$size) [Bits $size 250 210]
 	}
 
@@ -354,7 +354,7 @@ proc ConfigMap::Init {} {
 	symbol new sym.magma.treasure
 	symbol new sym.money
 	symbol new sym.stair
-	if {[variant KANGBANDTK ZANGBANDTK]} {
+	if {[variant KANGBANDTK ZANGBANDTK TOMETK]} {
 		symbol new sym.pet
 		symbol special pet sym.pet
 		symbol new sym.grass

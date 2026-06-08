@@ -2821,7 +2821,7 @@ void sound_init(void)
 #endif
 	g_sound_group[SNDGRP_MONSTER_SPELL].count = count;
 
-#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK)
+#if defined(ANGBANDTK) || defined(KANGBANDTK) || defined(ZANGBANDTK) || defined(TOMETK)
 
 	g_sound_group[SNDGRP_MONSTER_SPELL].keyword =
 		(const char **) Tcl_AllocDebug(sizeof(char *) * count);

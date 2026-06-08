@@ -287,12 +287,24 @@ void Plat_BitmapNew(Tcl_Interp *interp, BitmapPtr bitmapPtr)
 	if (bitmapPtr->width < 1) bitmapPtr->width = 1;
 	if (bitmapPtr->height < 1) bitmapPtr->height = 1;
 
-dbwin("Bitmap_New: width=%d height=%d\n", bitmapPtr->width, bitmapPtr->height);
+dbwin("Bitmap_New: width=%d height=%d depth=%d\n", bitmapPtr->width, bitmapPtr->height, depth);
 dbwin("red=%#lx green=%#lx blue=%#lx\n", visual->red_mask, visual->green_mask, visual->blue_mask);
 
 	/* Create shared-memory image. */
     platData->ximage = XShmCreateImage(display, visual, depth, ZPixmap, NULL,
 		&platData->shminfo, bitmapPtr->width, bitmapPtr->height);
+
+	/* TNB: XShmCreateImage returns NULL on a bad visual/depth combination.
+	 * Without this guard the following ->bytes_per_line deref segfaults. */
+	if (platData->ximage == NULL)
+	{
+		fprintf(stderr, "Bitmap_New: XShmCreateImage failed "
+			"(width=%d height=%d depth=%d)\n",
+			bitmapPtr->width, bitmapPtr->height, depth);
+		fflush(stderr);
+		Tcl_Panic("XShmCreateImage() returned NULL (width=%d height=%d depth=%d)",
+			bitmapPtr->width, bitmapPtr->height, depth);
+	}
 
 	/* Allocate shared memory */
     ret = platData->shminfo.shmid = shmget(IPC_PRIVATE,

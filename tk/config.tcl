@@ -713,7 +713,7 @@ proc NSConfig::ReadTownVault {} {
 	# towns are read by the ".cfg" file.
 	if {[variant ZANGBANDTK] && ![angband setting set vanilla_town]} return
 
-	if {[variant ANGBANDTK OANGBANDTK ZANGBANDTK]} {
+	if {[variant ANGBANDTK OANGBANDTK ZANGBANDTK TOMETK]} {
 		if {[Global config,prefix] eq "dg32+iso"} return
 		set name town.vlt
 	}
