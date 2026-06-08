@@ -236,6 +236,9 @@ proc NSBirth::NSBirth {oop} {
 	if {[variant ZANGBANDTK]} {
 		set screenList [list Gender Race Class Realm1 Realm2 AutoRoll Points]
 	}
+	if {[variant TOMETK]} {
+		set screenList [list Gender Race Class AutoRoll Points]
+	}
 
 	# Get busy
 	Info $oop busy 0
@@ -2309,6 +2312,9 @@ proc NSBirth::BirthHack {oop} {
 	}
 	if {[variant ZANGBANDTK]} {
 		set screenList [list Gender Race Class Realm1 Realm2 Options AutoRoll RollOne]
+	}
+	if {[variant TOMETK]} {
+		set screenList [list Gender Race Class Options AutoRoll RollOne]
 	}
 
 	foreach screen $screenList {

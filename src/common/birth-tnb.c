@@ -2501,7 +2501,11 @@ void player_birth(void)
 {
 	int i, j;
 
+#if !defined(TOMETK)
+	/* ToME genera el historial en su engine; la tabla h_info de la cola es un
+	 * stub, así que la validación de charts no aplica. */
 	validate_bg();
+#endif
 
 	/* Set up the character creation display */
 	angtk_eval("angband_birth", "setup", NULL);
@@ -2876,9 +2880,10 @@ objcmd_birth_class(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj 
 	mp_ptr = &magic_info[p_ptr->pclass];
 #endif /* !TOMETK */
 
-#if defined(ANGBANDTK) || defined(OANGBANDTK)
+#if defined(ANGBANDTK) || defined(OANGBANDTK) || defined(TOMETK)
+	/* ToME: sin realms/plot -> directo a generate tras elegir clase. */
 	birth_ptr->stage = BIRTH_GENERATE;
-#endif /* ANGBANDTK, OANGBANDTK */
+#endif /* ANGBANDTK, OANGBANDTK, TOMETK */
 #if defined(KANGBANDTK)
 	birth_ptr->stage = BIRTH_PLOT;
 #endif /* KANGBANDTK */

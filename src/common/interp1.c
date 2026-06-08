@@ -4123,7 +4123,12 @@ static void init_keyword_misc(void)
 	C_MAKE(keyword_class, MAX_CLASS + 1, cptr);
 	for (i = 0; i < MAX_CLASS; i++)
 	{
+#if defined(TOMETK)
+		/* ToME: .title es un offset s32b dentro de c_name, no un char*. */
+		keyword_class[i] = (char *) (c_name + class_info[i].title);
+#else
 		keyword_class[i] = (char *) class_info[i].title;
+#endif
 	}
 	keyword_class[MAX_CLASS] = NULL;
 
@@ -4136,6 +4141,10 @@ static void init_keyword_misc(void)
 #endif
 #if defined(ZANGBANDTK)
 		keyword_race[i] = (char *) race_info[i].title;
+#endif
+#if defined(TOMETK)
+		/* ToME: .title es un offset s32b dentro de rp_name, no un char*. */
+		keyword_race[i] = (char *) (rp_name + race_info[i].title);
 #endif
 	}
 	keyword_race[MAX_P_IDX] = NULL;

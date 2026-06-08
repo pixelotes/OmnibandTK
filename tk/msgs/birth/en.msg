@@ -1020,7 +1020,7 @@ the accursed tome have retained their sanity."
 
 ::msgcat::mcset $loc Prompt_Points \
 	"Choose your character's starting stats"
-if {[variant ANGBANDTK KANGBANDTK ZANGBANDTK]} {
+if {[variant ANGBANDTK KANGBANDTK ZANGBANDTK TOMETK]} {
 	set amount 100
 }
 if {[variant OANGBANDTK]} {

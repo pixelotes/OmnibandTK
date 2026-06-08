@@ -71,7 +71,7 @@ proc NSCharInfoCanvas::NSCharInfoCanvas {oop parent} {
 	if {[variant ANGBANDTK KANGBANDTK]} {
 		set height [expr {$lineHgt * 24}]
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		set height [expr {$lineHgt * 25}]
 	}
 
@@ -323,7 +323,7 @@ proc NSCharInfoCanvas::InitLayout {oop} {
 		-
 		Burden
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		set labelList [lreplace $labelList 6 6 - Armor]
 	}
 	InitLayoutAux $oop tag4 $row2 nw $labelList
@@ -340,7 +340,7 @@ proc NSCharInfoCanvas::InitLayout {oop} {
 			"Infra"
 		}
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		set labelList {
 			"Fighting"
 			"+ to Skill"
@@ -366,7 +366,7 @@ proc NSCharInfoCanvas::InitLayout {oop} {
 		"Perception"
 		"Searching"
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		lappend labelList Infravision
 	}
 	InitLayoutAux $oop tag6 $row2 nw $labelList
@@ -487,7 +487,7 @@ proc NSCharInfoCanvas::InitLayout {oop} {
 		-
 		*burden
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		set tagList [lreplace $tagList 6 6 - *armor]
 	}
 	InitLayoutAux2 $oop tagC $row2 ne $tagList
@@ -505,7 +505,7 @@ proc NSCharInfoCanvas::InitLayout {oop} {
 			*infra
 		}
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		set tagList {
 			-
 			*fskill
@@ -531,7 +531,7 @@ proc NSCharInfoCanvas::InitLayout {oop} {
 		perception
 		searching
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		lappend tagList *infra
 	}
 	InitLayoutAux2 $oop tagE $row2 ne $tagList
@@ -934,7 +934,7 @@ proc NSCharInfoCanvas::SetInfo {oop} {
 	set base [lindex $info 0]
 	set plus [format "%+d" [lindex $info 1]]
 	$canvas itemconfigure *armor -text "\[$base,$plus]" -fill [Value TERM_L_BLUE]
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		$canvas itemconfigure *armor -fill [Value TERM_L_GREEN]
 	}
 
@@ -1071,7 +1071,7 @@ proc NSCharInfoCanvas::WipeInfo {oop} {
 			name sex race class title *hp *sp \
 			age height weight social_class maximize preserve
 	}
-	if {[variant OANGBANDTK ZANGBANDTK]} {
+	if {[variant OANGBANDTK ZANGBANDTK TOMETK]} {
 		lappend tags \
 			*fskill *fdeadliness *sskill *sdeadliness
 	}

@@ -1813,6 +1813,13 @@ objcmd_game(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST 
 				return TCL_ERROR;
 			}
 			game_in_progress = 1;
+#if defined(TOMETK)
+			/* New game: sin savefile todavía (el birth fija nombre/ruta).
+			 * Evita que load_player() de ToME se cuelgue en el prompt
+			 * "Savefile does not exist" -more- (la ventana de arranque tapa
+			 * el Term, así que el prompt es invisible). */
+			savefile[0] = '\0';
+#endif
 			play_game(TRUE);
 			quit(NULL);
 			break;

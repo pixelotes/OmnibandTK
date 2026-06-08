@@ -102,4 +102,7 @@ function tome_intro()
 	return
 end
 
-add_hook_script(HOOK_INIT, "tome_intro", "lua_intro_init")
+-- TNB: intro de texto animado (Term_putch + inkey) desactivado en el port Tk
+-- de Omniband: bloquea play_game antes del birth (el Term queda tapado por la
+-- ventana de arranque). El front-end Tk tiene su propia pantalla de inicio.
+-- add_hook_script(HOOK_INIT, "tome_intro", "lua_intro_init")
