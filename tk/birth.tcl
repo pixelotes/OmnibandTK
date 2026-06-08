@@ -200,6 +200,15 @@ proc NSBirth::NSBirth {oop} {
 			Info $oop points,$stat 10
 		}
 	}
+	if {[variant TOMETK]} {
+		Info $oop autoroll 0
+		Info $oop pointbased 1
+		Info $oop maximize 0
+		Info $oop preserve 1
+		foreach stat [angband info stat_name] {
+			Info $oop points,$stat 10
+		}
+	}
 	foreach stat [angband info stat_name] {
 		Info $oop stat_limit,$stat ""
 	}

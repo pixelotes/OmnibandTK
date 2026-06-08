@@ -1818,6 +1818,21 @@ static void player_wipe(void)
 	/* Wipe the player */
 	(void) WIPE(p_ptr, player_type);
 
+#if defined(TOMETK)
+	/* ToME aloca dinámicamente p_ptr->corruptions y p_ptr->powers (bool*); su
+	 * propio player_wipe las preserva alrededor del WIPE. El wizard de la cola
+	 * no replica esa init, y el WIPE las deja NULL -> deref NULL en
+	 * calc_bonuses (corruptions) y calc_powers (powers). Realocarlas (cero). */
+	if (max_corruptions > 0)
+	{
+		C_MAKE(p_ptr->corruptions, max_corruptions, bool);
+	}
+	if (power_max > 0)
+	{
+		C_MAKE(p_ptr->powers, power_max, bool);
+	}
+#endif /* TOMETK */
+
 #if defined(ZANGBANDTK)
 
 	/* Wipe the history */
@@ -2879,6 +2894,13 @@ objcmd_birth_class(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj 
 #if !defined(TOMETK)
 	mp_ptr = &magic_info[p_ptr->pclass];
 #endif /* !TOMETK */
+#if defined(TOMETK)
+	/* ToME: clase + subclase (spec). El wizard de la cola no ofrece pantalla de
+	 * subclase; fijar la 0 para que spp_ptr sea válido (calc_bonuses lo deref vía
+	 * PRACE_FLAG: spp_ptr->flags1). TODO: pantalla de subclase propia de ToME. */
+	p_ptr->pspec = 0;
+	spp_ptr = &class_info[p_ptr->pclass].spec[p_ptr->pspec];
+#endif /* TOMETK */
 
 #if defined(ANGBANDTK) || defined(OANGBANDTK) || defined(TOMETK)
 	/* ToME: sin realms/plot -> directo a generate tras elegir clase. */
@@ -3034,17 +3056,6 @@ objcmd_birth_get_player(ClientData clientData, Tcl_Interp *interp, int objc, Tcl
 	get_virtues();
 
 #endif /* ZANGBANDTK */
-
-#if defined(TOMETK)
-	/* ToME: el wizard de la cola no replica toda la init de player_birth.
-	 * HOOK_CALC_BONUS (en update_stuff->calc_bonuses) recorre p_ptr->corruptions
-	 * (bool*), que la birth de ToME alocaba/preservaba; asegurarlo aquí para
-	 * evitar un deref NULL. TODO: replicar la init completa de ToME. */
-	if (p_ptr->corruptions == NULL && max_corruptions > 0)
-	{
-		C_MAKE(p_ptr->corruptions, max_corruptions, bool);
-	}
-#endif /* TOMETK */
 
 	/* Calculate the bonuses and hitpoints */
 	p_ptr->update |= (PU_BONUS | PU_HP);
