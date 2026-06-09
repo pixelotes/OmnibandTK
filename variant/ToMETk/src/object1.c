@@ -5692,7 +5692,14 @@ bool get_item_floor(int *cp, cptr pmt, cptr str, int mode)
 		prt(tmp_val, 0, 0);
 
 		/* Get a key */
-		which = inkey();
+		/* TNB: contexto "seleccion de objeto" -> la GUI hace clicable la
+		 * ventana de inventario/equipo. INKEY_ITEM=4. */
+		{
+			extern int inkey_flags;
+			inkey_flags = 4; /* INKEY_ITEM */
+			which = inkey();
+			inkey_flags = 0;
+		}
 
 		/* Parse it */
 		switch (which)

@@ -2652,7 +2652,13 @@ static void msg_flush(int x)
 	/* Get an acceptable keypress */
 	while (1)
 	{
-		int cmd = inkey();
+		int cmd;
+		/* TNB: marca contexto "-more-" para que la GUI lo cierre sola
+		 * (qebind <Inkey-more> -> angband keypress ESC). INKEY_MORE=6. */
+		extern int inkey_flags;
+		inkey_flags = 6; /* INKEY_MORE */
+		cmd = inkey();
+		inkey_flags = 0;
 		if (quick_messages) break;
 		if ((cmd == ESCAPE) || (cmd == ' ')) break;
 		if ((cmd == '\n') || (cmd == '\r')) break;
