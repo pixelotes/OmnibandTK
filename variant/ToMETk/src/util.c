@@ -2060,6 +2060,16 @@ char inkey(void)
 		Term_flush();
 	}
 
+	/* TNB: avisa a la GUI que tipo de input se espera (cmd/dir/item/...).
+	 * Habilita menus, raton y keymaps de comando. inkey_flags lo setean
+	 * request_command/get_aim_dir/etc. EVENT_INKEY=5 (ver src/common/tnb.h).
+	 * Hacerlo despues del flush. */
+	{
+		extern int inkey_flags;
+		extern void Bind_Generic(int eventType, int eventDetail);
+		if (inkey_flags)
+			Bind_Generic(5, inkey_flags);
+	}
 
 	/* Access cursor state */
 	(void)Term_get_cursor(&v);
@@ -2823,6 +2833,14 @@ void cmsg_print(byte color, cptr msg)
 
 	/* Window stuff */
 	p_ptr->window |= (PW_MESSAGE);
+
+	/* TNB: avisa a la GUI de un mensaje nuevo para que la Messages Window y la
+	 * banda superior se actualicen. EVENT_TRACK=10, KEYWORD_TRACK_MESSAGE=6
+	 * (ver src/common/tnb.h). */
+	{
+		extern void Bind_Generic(int eventType, int eventDetail);
+		Bind_Generic(10, 6 + 1);
+	}
 
 	/* Remember the message */
 	msg_flag = TRUE;
@@ -3730,8 +3748,14 @@ void request_command(int shopping)
 			/* Activate "command mode" */
 			inkey_flag = TRUE;
 
-			/* Get a command */
-			cmd = inkey();
+			/* TNB: marca el contexto "comando" para que inkey() genere
+			 * <Inkey-cmd> (habilita menus, raton, keymaps). INKEY_CMD=1. */
+			{
+				extern int inkey_flags;
+				inkey_flags = 1; /* INKEY_CMD */
+				cmd = inkey();
+				inkey_flags = 0;
+			}
 		}
 
 		/* Clear top line */
