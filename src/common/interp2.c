@@ -682,7 +682,7 @@ objcmd_cave(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST 
 				return TCL_ERROR;
 			}
 #endif /* KANGBANDTK */
-#if defined(ZANGBANDTK)
+#if defined(ZANGBANDTK) || defined(TOMETK)
 			if (SetArrayValueLong(varName, "special", cave[y][x].special) != TCL_OK)
 			{
 				return TCL_ERROR;
@@ -692,7 +692,7 @@ objcmd_cave(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST 
 			{
 				feat = cave[y][x].mimic;
 			}
-#endif /* ZANGBANDTK */
+#endif /* ZANGBANDTK, TOMETK */
 
 			if (SetArrayValueLong(varName, "f_idx", feat) != TCL_OK)
 			{
