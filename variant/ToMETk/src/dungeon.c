@@ -5341,7 +5341,11 @@ static void dungeon(void)
 	 * antes de notice_stuff/update_stuff/redraw_stuff. */
 	{
 		extern void Bind_Generic(int eventType, int eventDetail);
+		extern void Bind_Position(int who, int y1, int x1, int y2, int x2);
 		Bind_Generic(13, 0 + 1);
+		/* Posicion inicial del jugador (para clic-para-mover y centrar el mapa
+		 * antes del primer paso). */
+		Bind_Position(0, 0, 0, p_ptr->py, p_ptr->px);
 	}
 #endif /* TOMETK */
 

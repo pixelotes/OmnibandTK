@@ -3713,6 +3713,16 @@ void move_player_aux(int dir, int do_pickup, int run, bool disarm)
 		/* Redraw old spot */
 		lite_spot(oy, ox);
 
+#if defined(TOMETK)
+		/* TNB: el jugador se movio. Emite el evento de posicion para que la GUI
+		 * actualice PYPX (el clic-para-mover calcula la direccion desde la
+		 * posicion del jugador) y recentre el mapa. ToME no tiene PR_POSITION. */
+		{
+			extern void Bind_Position(int who, int y1, int x1, int y2, int x2);
+			Bind_Position(0, 0, 0, p_ptr->py, p_ptr->px);
+		}
+#endif /* TOMETK */
+
 		/* Sound */
 		/* sound(SOUND_WALK); */
 
