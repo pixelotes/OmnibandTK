@@ -1592,6 +1592,15 @@ void display_store(void)
 {
 	char buf[80];
 
+#if defined(TOMETK)
+	/* TNB: abre/actualiza la ventana de tienda de Omniband. display_store() se
+	 * llama al entrar y tras cada comando, asi que la ventana se mantiene al
+	 * dia. El dibujo al Term de abajo es no-op (hooks de texto vacios). */
+	{
+		extern void angtk_eval(char *command, ...);
+		angtk_eval("angband_display", "store", "show", (char *) 0);
+	}
+#endif /* TOMETK */
 
 	/* Clear screen */
 	Term_clear();
@@ -1711,9 +1720,19 @@ static int get_stock(int *com_val, cptr pmt, int i, int j)
 	while (TRUE)
 	{
 		int k;
+		int flag;
+
+		/* TNB: contexto "seleccion en tienda" -> la ventana de tienda se hace
+		 * clicable para elegir el objeto. INKEY_ITEM_STORE=5. */
+		{
+			extern int inkey_flags;
+			inkey_flags = 5; /* INKEY_ITEM_STORE */
+			flag = get_com(out_val, &command);
+			inkey_flags = 0;
+		}
 
 		/* Escape */
-		if (!get_com(out_val, &command)) break;
+		if (!flag) break;
 
 		/* Convert */
 		k = (islower(command) ? A2I(command) : -1);
@@ -3947,6 +3966,14 @@ void do_cmd_store(void)
 		if (st_ptr->store_open >= turn) leave_store = TRUE;
 	}
 
+#if defined(TOMETK)
+	/* TNB: cierra la ventana de tienda de Omniband al salir. */
+	{
+		extern void angtk_eval(char *command, ...);
+		angtk_eval("angband_display", "store", "hide", (char *) 0);
+	}
+#endif /* TOMETK */
+
 	/* Free turn XXX XXX XXX */
 	energy_use = 0;
 
@@ -4417,6 +4444,14 @@ void do_cmd_home_trump(void)
 		/* Hack -- get kicked out of the store */
 		if (st_ptr->store_open >= turn) leave_store = TRUE;
 	}
+
+#if defined(TOMETK)
+	/* TNB: cierra la ventana de tienda de Omniband al salir. */
+	{
+		extern void angtk_eval(char *command, ...);
+		angtk_eval("angband_display", "store", "hide", (char *) 0);
+	}
+#endif /* TOMETK */
 
 
 	/* Hack -- Character is no longer in "icky" mode */
