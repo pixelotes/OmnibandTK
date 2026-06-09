@@ -5332,6 +5332,19 @@ static void dungeon(void)
 	/* Combine / Reorder the pack */
 	p_ptr->notice |= (PN_COMBINE | PN_REORDER);
 
+#if defined(TOMETK)
+	/* TNB: genera el evento <Dungeon-enter>. init-other.tcl deja el widget del
+	 * mapa con "-noupdate on -paintcolor black" (negro y congelado) hasta que
+	 * este evento se dispara; ToME's dungeon.c no trae el parche TNB que tiene
+	 * ZAngband (dungeon.c:4547), asi que sin esto el mapa nunca se dibuja.
+	 * EVENT_DUNGEON=13, KEYWORD_DUNGEON_ENTER=0 (ver src/common/tnb.h). Hacerlo
+	 * antes de notice_stuff/update_stuff/redraw_stuff. */
+	{
+		extern void Bind_Generic(int eventType, int eventDetail);
+		Bind_Generic(13, 0 + 1);
+	}
+#endif /* TOMETK */
+
 	/* Notice stuff */
 	notice_stuff();
 

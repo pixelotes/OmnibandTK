@@ -2205,6 +2205,16 @@ void lite_spot(int y, int x)
 # endif  /* USE_EGO_GRAPHICS */
 #endif /* USE_TRANSPARENCY */
 
+#if defined(TOMETK)
+	/* TNB: dibuja el grid en el canvas del mapa de Omniband (en vez del Term
+	 * antiguo). angtk_lite_spot es un puntero a funcion (dummy hasta que el
+	 * mapa esta listo), declarado en tnb.h. */
+	{
+		extern void (*angtk_lite_spot)(int y, int x);
+		angtk_lite_spot(y, x);
+	}
+	return;
+#endif
 
 	/* Redraw if on screen */
 	if (panel_contains(y, x))
@@ -2299,6 +2309,17 @@ void prt_map(void)
 	int x, y;
 
 	int v;
+
+#if defined(TOMETK)
+	/* TNB: redibuja el mapa entero en el canvas de Omniband. ToME's cave.c no
+	 * trae el parche TNB que tiene ZAngband; sin esto PR_MAP dibuja al Term
+	 * antiguo y el canvas del mapa queda en negro. */
+	{
+		extern void angtk_cave_changed(void);
+		angtk_cave_changed();
+	}
+	return;
+#endif
 
 	/* Access the cursor state */
 	(void)Term_get_cursor(&v);
