@@ -832,6 +832,7 @@ proc HandleArgv {} {
 
 	# Show Setup Window if never done
 	set doSetup [expr {![Value warning,setup]}]
+	if {[info exists ::env(TNB_AUTONEW)]} { set doSetup 0 } ;# TNB temp
 
 	for {set i 0} {$i < $argc} {incr i} {
 		set arg [lindex $argv $i]
@@ -1545,6 +1546,41 @@ Global tclCompiler 0
 
 # Begin
 NSInitStartup::InitStartup
+if {[info exists ::env(TNB_AUTONEW)]} {
+	catch {Value config,prefix ascii}
+	set ::tnbmoves 0
+	proc TNBMove {} {
+		incr ::tnbmoves
+		set dirs {2 2 2 6 6 6 8 8 8 4 4 4}
+		set d [lindex $dirs [expr {$::tnbmoves % 12}]]
+		catch {angband keypress $d}
+		puts stderr "@@ move $::tnbmoves dir=$d turn=[catch {struct set player_type 0 py}]"; flush stderr
+		after 350 TNBMove
+	}
+	proc TNBStep {oop} {
+		if {[catch {
+			set s [NSBirth::Info $oop screen]
+			if {$s eq "Points"} { foreach st [angband info stat_name] { catch {birth points stat $st 8} } }
+			if {$s eq "RollOne"} {
+				catch {Value config,prefix ascii}
+				catch {angband game savefile /tmp/tometest}
+				birth done
+				catch {angband_load init}
+				catch {NSModule::CloseModule NSPlayer}
+				catch {destroy .autoprogress}
+				catch {NSModule::CloseModule NSBirth}
+				Global isNewGame 1
+				angband keypress " "
+				after 20000 TNBMove
+				return
+			}
+			NSBirth::Next $oop
+		} e]} { return }
+		after 800 [list TNBStep $oop]
+	}
+	after 3000 { catch {angband game new} }
+	after 9000 { catch {TNBStep $NSBirth::Priv(oop)} }
+}
 
 if {$DEBUG} {
 	raise .
